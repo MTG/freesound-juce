@@ -24,11 +24,6 @@ int testAuthBrowser(String id, String secret) {
 	std::cout << client.exchangeToken(authCode);
 	std::cout << client.refreshAccessToken();
 
-
-	SoundList list = client.textSearch("bass");
-	std::cout << list.getResults().size();
-	list = client.fetchNextPage(list);
-
 	return 1;
 }
 
@@ -42,6 +37,11 @@ int searchWithToken(String secret) {
 	std::cout << JSON::toString(results);
 
 	//Adicionar parametros extra na pesquisa
+	list = client.textSearch("alarm", "tag:guitar", "score", 0, -1, -1, "name,previews,analysis", "lowlevel.spectral_centroid.mean,lowlevel.pitch.mean");
+	std::cout << list.getResults().size();
+	results = list.getResults();
+	std::cout << JSON::toString(results);
+
 
 	return 1;
 }
