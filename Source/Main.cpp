@@ -23,14 +23,25 @@ int testAuthBrowser(String id, String secret) {
 	String sAuthCode(authCode);
 	std::cout << client.exchangeToken(authCode);
 	std::cout << client.refreshAccessToken();
+
+
+	SoundList list = client.textSearch("bass");
+	std::cout << list.getResults().size();
+	list = client.fetchNextPage(list);
+
 	return 1;
 }
 
 int searchWithToken(String secret) {
 	FreesoundClient client(secret);
 	SoundList list = client.textSearch("bass");
-	
+	std::cout << list.getResults().size();
 	list = client.fetchNextPage(list);
+	list = client.fetchPreviousPage(list);
+	var results = list.getResults();
+	std::cout << JSON::toString(results);
+
+	//Adicionar parametros extra na pesquisa
 
 	return 1;
 }
@@ -47,5 +58,6 @@ int main (int argc, char* argv[])
 	//testAuthBrowser(id, secret);
 	searchWithToken(secret);
 
-    return 0;
+
+    return 1;
 }

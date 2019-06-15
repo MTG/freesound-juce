@@ -75,6 +75,8 @@ public:
 	String getNextPage();
 	String getPreviousPage();
 
+	var getResults();
+
 };
 
 
@@ -142,7 +144,7 @@ public:
 		uri(uriToRequest)
 	{}
 	
-	Response request(StringPairArray params = StringPairArray(), String data = String());
+	Response request(StringPairArray params = StringPairArray(), String data = String(), bool postLikeRequest = true);
 
 private:
 	URL uri;

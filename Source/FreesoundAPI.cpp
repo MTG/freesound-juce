@@ -1,4 +1,4 @@
-#include "..\..\Source\FreesoundAPI.h"
+#include "FreesoundAPI.h"
 
 String URIS::HOST = String("www.freesound.org");
 String URIS::BASE = String("https://" + HOST + "/apiv2");
@@ -33,7 +33,6 @@ String URIS::CONFIRMATION = String("https://" + HOST + "/home/app_permissions/pe
 
 URL URIS::uri(String uri, StringArray replacements)
 {
-	std::cout << replacements.size();
 	if (!replacements.isEmpty()) {
 		for (int i = 0; i < replacements.size(); i++) {
 			int start = uri.indexOfChar('<');
@@ -154,7 +153,7 @@ SoundList FreesoundClient::textSearch(String query, String filter, String sort, 
 
 	URL url = URIS::uri(URIS::TEXT_SEARCH, StringArray());
 	FSRequest request(url, *this);
-	Response resp = request.request(params);
+	Response resp = request.request(params,String(),false);
 	int resultCode = resp.first;
 	if (resultCode == 200) {
 		var response = resp.second;
@@ -167,7 +166,7 @@ SoundList FreesoundClient::textSearch(String query, String filter, String sort, 
 SoundList FreesoundClient::fetchNextPage(SoundList soundList)
 {
 	FSRequest request(soundList.getNextPage(), *this);
-	Response resp = request.request();
+	Response resp = request.request(StringPairArray(), String(), false);
 	int resultCode = resp.first;
 	if (resultCode == 200) {
 		var response = resp.second;
@@ -180,7 +179,7 @@ SoundList FreesoundClient::fetchNextPage(SoundList soundList)
 SoundList FreesoundClient::fetchPreviousPage(SoundList soundList)
 {
 	FSRequest request(soundList.getPreviousPage(), *this);
-	Response resp = request.request();
+	Response resp = request.request(StringPairArray(), String(), false);
 	int resultCode = resp.first;
 	if (resultCode == 200) {
 		var response = resp.second;
@@ -196,7 +195,7 @@ SoundList FreesoundClient::fetchPreviousPage(SoundList soundList)
 
 bool FreesoundClient::isTokenNotEmpty()
 {
-	if (token.isNotEmpty()) { return true; }
+	if (header.isNotEmpty()) { return true; }
 	else { return false; }
 }
 
@@ -255,7 +254,7 @@ void FreesoundClientComponent::pageLoadHadNetworkError() {
 
 
 
-Response FSRequest::request(StringPairArray params, String data)
+Response FSRequest::request(StringPairArray params, String data, bool postLikeRequest)
 {
 
 	URL url = uri;
@@ -266,8 +265,9 @@ Response FSRequest::request(StringPairArray params, String data)
 	if (params.size() != 0) { url = url.withParameters(params); }
 	if (client.isTokenNotEmpty()) { header = "Authorization: " + client.getHeader(); }
 
+
 	//Try to open a stream with this information.
-	if (auto stream = std::unique_ptr<InputStream>(url.createInputStream(true, nullptr, nullptr, header,
+	if (auto stream = std::unique_ptr<InputStream>(url.createInputStream(postLikeRequest, nullptr, nullptr, header,
 		10000, // timeout in millisecs
 		&responseHeaders, &statusCode)))
 	{
@@ -290,7 +290,7 @@ SoundList::SoundList(var response)
 	count = response["count"]; //getIntValue
 	nextPage = response["next"];
 	previousPage = response["previous"];
-	results = response["count"];
+	results = response["results"];
 }
 
 String SoundList::getNextPage()
@@ -301,4 +301,9 @@ String SoundList::getNextPage()
 String SoundList::getPreviousPage()
 {
 	return previousPage;
+}
+
+var SoundList::getResults()
+{
+	return results;
 }

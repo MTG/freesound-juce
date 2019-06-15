@@ -4,6 +4,8 @@
   <MAINGROUP id="rw8r3d" name="FreesoundAPI">
     <GROUP id="{FA40D8A3-3F38-8DD5-1E45-26125685E6E3}" name="Source">
       <FILE id="b4GjqS" name="FreesoundAPI.h" compile="1" resource="0" file="Source/FreesoundAPI.h"/>
+      <FILE id="dLTXmP" name="FreesoundAPI.cpp" compile="1" resource="0"
+            file="Source/FreesoundAPI.cpp"/>
       <FILE id="CoJjpw" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
     </GROUP>
   </MAINGROUP>
