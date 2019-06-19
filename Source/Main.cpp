@@ -42,6 +42,7 @@ int searchWithToken(String secret) {
 	results = list.getResults();
 	std::cout << JSON::toString(results);
 
+	FSSound sound(results[1]);
 
 	return 1;
 }
@@ -49,7 +50,8 @@ int searchWithToken(String secret) {
 
 int main (int argc, char* argv[])
 {
-
+	argc;
+	argv;
     // ..your code goes here!
 
 	String secret = "xlMDWbwEp65jNneniFiwNe3u7aKyxBPKrxug05KC";

@@ -15,6 +15,23 @@
 typedef std::pair<int, var> Response;
 typedef std::function<void()> AuthorizationCallback;
 
+class SoundList {
+private:
+	int count;
+	String nextPage;
+	String previousPage;
+	var results;
+public:
+
+	SoundList();
+	SoundList(var response);
+
+	String getNextPage();
+	String getPreviousPage();
+
+	var getResults();
+
+};
 
 class URIS {
 
@@ -60,24 +77,69 @@ public:
 	static URL uri(String uri, StringArray replacements = StringArray());
 };
 
-
-class SoundList {
+class FSUser {
 private:
-	int count;
-	String nextPage;
-	String previousPage;
-	var results;
+	URL profile;
+	String username;
+	String about;
+	URL homepage;
+	var avatar;
+	String dateJoined;
+	int numSounds;
+	SoundList sounds;
+	int numPacks;
+	//URL packs;
+	int numPosts;
+	int numComments;   
+	//URL bookmarks
+
 public:
-
-	SoundList();
-	SoundList(var response);
-
-	String getNextPage();
-	String getPreviousPage();
-
-	var getResults();
-
+	FSUser();
+	FSUser(String username);
 };
+
+class FSSound {
+//public for now, should create custom get and set methods for each
+private:
+	int id;
+	URL url;
+	String name;
+	StringArray tags;
+	String description;
+	String geotag;
+	String created;
+	String license;
+	String format;
+	int channels;
+	int filesize;
+	int bitrate;
+	int bitdepth;
+	int duration;
+	int samplerate;
+	String user;
+	URL pack;
+	URL download;
+	URL bookmark;
+	var images;
+	int numDownloads;
+	float avgRating;
+	int numRatings;
+	URL rate;
+	URL comments;
+	int numComments;
+	URL comment;
+	URL similarSounds;
+	var analysis;
+	URL analysisStats;
+	URL analysisFrames;
+	var acAnalysis;
+
+public:
+	FSSound();
+	FSSound(var sound);
+};
+
+
 
 
 
@@ -113,8 +175,11 @@ public:
 	int exchangeToken(String authCode);
 	int refreshAccessToken();
 	SoundList textSearch(String query, String filter=String(), String sort="score", int groupByPack=0, int page=-1, int pageSize=-1, String fields = String(), String descriptors = String(), int normalized=0);
+	SoundList contentSearch(String target, String descriptorsFilter=String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
+	//SoundList contentSearchFile(File analysisFile, String descriptorsFilter, int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
 	SoundList fetchNextPage(SoundList soundList);
 	SoundList fetchPreviousPage(SoundList soundList);
+	FSSound getSound(String id);
 	bool isTokenNotEmpty();
 	String getToken();
 	String getHeader();

@@ -163,6 +163,48 @@ SoundList FreesoundClient::textSearch(String query, String filter, String sort, 
 	return SoundList();
 }
 
+SoundList FreesoundClient::contentSearch(String target, String descriptorsFilter, int page, int pageSize, String fields, String descriptors, int normalized)
+{
+	StringPairArray params;
+
+	params.set("target", target);
+
+	if (descriptorsFilter.isNotEmpty()) {
+		params.set("descriptors_filter", descriptorsFilter);
+	}
+
+	if (page != -1) {
+		params.set("page", String(page));
+	}
+
+	if (pageSize != -1) {
+		params.set("page_size", String(pageSize));
+	}
+
+	if (fields.isNotEmpty()) {
+		params.set("fields", fields);
+	}
+
+	if (descriptors.isNotEmpty()) {
+		params.set("descriptors", descriptors);
+	}
+
+	if (normalized != 0) {
+		params.set("normalized", "1");
+	}
+
+	URL url = URIS::uri(URIS::TEXT_SEARCH, StringArray());
+	FSRequest request(url, *this);
+	Response resp = request.request(params, String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		var response = resp.second;
+		SoundList returnedSounds(response);
+		return returnedSounds;
+	}
+	return SoundList();
+}
+
 SoundList FreesoundClient::fetchNextPage(SoundList soundList)
 {
 	FSRequest request(soundList.getNextPage(), *this);
@@ -187,6 +229,21 @@ SoundList FreesoundClient::fetchPreviousPage(SoundList soundList)
 		return returnedSounds;
 	}
 	return SoundList();
+}
+
+FSSound FreesoundClient::getSound(String id)
+{
+	URL url = URIS::uri(URIS::SOUND, StringArray(id));
+	FSRequest request(url, *this);
+	Response resp = request.request(StringPairArray(), String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		var response = resp.second;
+		FSSound returnedSound(response);
+		return returnedSound;
+	}
+
+	return FSSound();
 }
 
 
@@ -306,4 +363,66 @@ String SoundList::getPreviousPage()
 var SoundList::getResults()
 {
 	return results;
+}
+
+FSSound::FSSound()
+{
+}
+
+FSSound::FSSound(var sound)
+{
+	id = sound["id"];
+	url = URL(sound["url"]);
+	name = sound["name"];
+	tags = StringArray();
+	//Verificar que isto está bem. sound[tags]precisa de ser um array
+	for (int i = 0; i < sound["tags"].size(); i++) {
+		tags.add(sound["tags"][i]);
+	}
+	description = sound["description"];
+	geotag = sound["geotag"];
+	created = sound["created"];
+	license = sound["license"];
+	format = sound["type"];
+	channels = sound["channels"];
+	filesize = sound["filesize"];
+	bitrate = sound["bitrate"];
+	bitdepth = sound["bitdepth"];
+	duration = sound["duration"];
+	samplerate = sound["samplerate"];
+	user = sound["username"];
+	pack = URL(sound["pack"]);
+	download = URL(sound["download"]);
+	bookmark = URL(sound["bookmark"]);
+	images = sound["previews"];
+	numDownloads = sound["images"];
+	avgRating = sound["num_downloads"];
+	numRatings = sound["avg_rating"];
+	rate = URL(sound["rate"]);
+	comments = URL(sound["comments"]);
+	numComments = sound["num_comments"];
+	comment = URL(sound["comment"]);
+	similarSounds = URL(sound["similar_sounds"]);
+	analysis = sound["analysis"];
+	analysisStats = URL(sound["analysis_stats"]);
+	analysisFrames = URL(sound["analysis_frames"]);
+	acAnalysis = sound["ac_analysis"];
+
+}
+
+FSUser::FSUser(String username)
+{
+	URL profile;
+	String username;
+	String about;
+	URL homepage;
+	var avatar;
+	String dateJoined;
+	int numSounds;
+	SoundList sounds;
+	int numPacks;
+	//URL packs;
+	int numPosts;
+	int numComments;
+
 }
