@@ -8,6 +8,8 @@
   ==============================================================================
 */
 
+//Todo - Comments
+
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
@@ -180,6 +182,8 @@ public:
 	SoundList fetchNextPage(SoundList soundList);
 	SoundList fetchPreviousPage(SoundList soundList);
 	FSSound getSound(String id);
+	var getSoundAnalysis(String id, String descriptors = String(), int normalized = 0);
+	SoundList getSimilarSounds(String id, String descriptorsFilter = String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
 	bool isTokenNotEmpty();
 	String getToken();
 	String getHeader();

@@ -193,7 +193,7 @@ SoundList FreesoundClient::contentSearch(String target, String descriptorsFilter
 		params.set("normalized", "1");
 	}
 
-	URL url = URIS::uri(URIS::TEXT_SEARCH, StringArray());
+	URL url = URIS::uri(URIS::CONTENT_SEARCH, StringArray());
 	FSRequest request(url, *this);
 	Response resp = request.request(params, String(), false);
 	int resultCode = resp.first;
@@ -245,6 +245,70 @@ FSSound FreesoundClient::getSound(String id)
 
 	return FSSound();
 }
+
+var FreesoundClient::getSoundAnalysis(String id, String descriptors, int normalized)
+{
+	StringPairArray params;
+
+	if (descriptors.isNotEmpty()) {
+		params.set("descriptors", descriptors);
+	}
+
+	if (normalized != 0) {
+		params.set("normalized", "1");
+	}
+
+	URL url = URIS::uri(URIS::SOUND_ANALYSIS, id);
+	FSRequest request(url, *this);
+	Response resp = request.request(params, String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		var response = resp.second;
+		return response;
+	}
+	return var();
+}
+
+SoundList FreesoundClient::getSimilarSounds(String id, String descriptorsFilter, int page, int pageSize, String fields, String descriptors, int normalized)
+{
+	StringPairArray params;
+
+	if (descriptorsFilter.isNotEmpty()) {
+		params.set("descriptors_filter", descriptorsFilter);
+	}
+
+	if (page != -1) {
+		params.set("page", String(page));
+	}
+
+	if (pageSize != -1) {
+		params.set("page_size", String(pageSize));
+	}
+
+	if (fields.isNotEmpty()) {
+		params.set("fields", fields);
+	}
+
+	if (descriptors.isNotEmpty()) {
+		params.set("descriptors", descriptors);
+	}
+
+	if (normalized != 0) {
+		params.set("normalized", "1");
+	}
+
+	URL url = URIS::uri(URIS::SIMILAR_SOUNDS, id);
+	FSRequest request(url, *this);
+	Response resp = request.request(params, String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		var response = resp.second;
+		SoundList returnedSounds(response);
+		return returnedSounds;
+	}
+	return SoundList();
+}
+
 
 
 
