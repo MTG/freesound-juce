@@ -69,6 +69,7 @@ public:
 	static String PACK_SOUNDS;
 	static String PACK_DOWNLOAD;
 	static String CONFIRMATION;
+	static String EDIT;
 
 	URIS(){
 	}
@@ -88,20 +89,19 @@ private:
 	var avatar;
 	String dateJoined;
 	int numSounds;
-	SoundList sounds;
+	URL sounds;
 	int numPacks;
-	//URL packs;
+	URL packs;
 	int numPosts;
 	int numComments;   
-	//URL bookmarks
+	URL bookmarks;
 
 public:
 	FSUser();
-	FSUser(String username);
+	FSUser(var user);
 };
 
 class FSSound {
-//public for now, should create custom get and set methods for each
 private:
 	int id;
 	URL url;
@@ -139,6 +139,7 @@ private:
 public:
 	FSSound();
 	FSSound(var sound);
+	URL getDownload();
 };
 
 
@@ -184,6 +185,17 @@ public:
 	FSSound getSound(String id);
 	var getSoundAnalysis(String id, String descriptors = String(), int normalized = 0);
 	SoundList getSimilarSounds(String id, String descriptorsFilter = String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
+	void downloadSound(FSSound sound, const File &location);
+	int uploadSound(const File &fileToUpload, String tags, String description, String name = String(), String license = "Creative Commons 0", String pack = String(), String geotag = String());
+	//int describeSound()
+	//int pendingUploads()
+	int editSoundDescription(String id, String name = String(), String tags = String(), String description = String(), String license = String(), String pack = String(), String geotag = String());
+	int bookmarkSound(String id, String name = String(), String category = String());
+	int rateSound(String id, int rating);
+	int commentSound(String id, String comment);
+	FSUser getUser(String user);
+	SoundList getUserSounds(String username, String descriptorsFilter = String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
+
 	bool isTokenNotEmpty();
 	String getToken();
 	String getHeader();
@@ -203,8 +215,6 @@ public:
 	void pageLoadHadNetworkError();
 
 };
-
-
 
 class FSRequest {
 public:

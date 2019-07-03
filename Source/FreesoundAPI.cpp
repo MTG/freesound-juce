@@ -12,6 +12,7 @@ String URIS::COMMENTS = String("/sounds/<sound_id>/comments/");
 String URIS::DOWNLOAD = String("/sounds/<sound_id>/download/");
 String URIS::UPLOAD = String("/sounds/upload/");
 String URIS::DESCRIBE = String("/sounds/<sound_id>/describe/");
+String URIS::EDIT = String("/sounds/<sound_id>/edit/");
 String URIS::PENDING = String("/sounds/pending_uploads/");
 String URIS::BOOKMARK = String("/sounds/<sound_id>/bookmark/");
 String URIS::RATE = String("/sounds/<sound_id>/rate/");
@@ -309,6 +310,196 @@ SoundList FreesoundClient::getSimilarSounds(String id, String descriptorsFilter,
 	return SoundList();
 }
 
+void FreesoundClient::downloadSound(FSSound sound, const File & location)
+{
+	URL address = sound.getDownload();
+	address.downloadToFile(location, this->header);
+}
+
+int FreesoundClient::uploadSound(const File & fileToUpload, String tags, String description, String name, String license, String pack, String geotag)
+{
+	StringPairArray params;
+
+	params.set("tags", tags);
+	params.set("description", description);
+	params.set("license", license);
+
+	if (name.isNotEmpty()) {
+		params.set("name", name);
+	}
+
+	if (pack.isNotEmpty()) {
+		params.set("pack", pack);
+	}
+
+	if (geotag.isNotEmpty()) {
+		params.set("geotag", geotag);
+	}
+
+	URL url = URIS::uri(URIS::UPLOAD);
+	url = url.withFileToUpload("audiofile", fileToUpload, "audio/*");
+	FSRequest request(url, *this);
+	Response resp = request.request(params, String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		var response = resp.second;
+		return response["id"];
+	}
+
+	return 0;
+}
+
+int FreesoundClient::editSoundDescription(String id, String name, String tags, String description, String license, String pack, String geotag)
+{
+	StringPairArray params;
+
+	if (tags.isNotEmpty()) {
+		params.set("tags", tags);
+	}
+	
+	if (description.isNotEmpty()) {
+		params.set("description", description);
+	}
+
+	if (license.isNotEmpty()) {
+		params.set("license", license);
+	}
+
+	if (name.isNotEmpty()) {
+		params.set("name", name);
+	}
+
+	if (pack.isNotEmpty()) {
+		params.set("pack", pack);
+	}
+
+	if (geotag.isNotEmpty()) {
+		params.set("geotag", geotag);
+	}
+
+	URL url = URIS::uri(URIS::EDIT, id);
+	FSRequest request(url, *this);
+	Response resp = request.request(params, String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		return 1;
+	}
+
+	return -1;
+}
+
+int FreesoundClient::bookmarkSound(String id, String name, String category)
+{
+	StringPairArray params;
+
+	if (name.isNotEmpty()) {
+		params.set("name", name);
+	}
+
+	if (category.isNotEmpty()) {
+		params.set("category", category);
+	}
+
+	URL url = URIS::uri(URIS::BOOKMARK, id);
+	FSRequest request(url, *this);
+	Response resp = request.request(params, String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		return 1;
+	}
+	return -1;
+}
+
+int FreesoundClient::rateSound(String id, int rating)
+{
+	StringPairArray params;
+	params.set("rating", String(rating));
+
+	URL url = URIS::uri(URIS::RATE, id);
+	FSRequest request(url, *this);
+	Response resp = request.request(params, String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		return 1;
+	}
+	return -1;
+}
+
+int FreesoundClient::commentSound(String id, String comment)
+{
+	StringPairArray params;
+	params.set("comment", comment);
+
+	URL url = URIS::uri(URIS::RATE, id);
+	FSRequest request(url, *this);
+	Response resp = request.request(params, String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		return 1;
+	}
+	return -1;
+}
+
+FSUser FreesoundClient::getUser(String user)
+{
+	URL url = URIS::uri(URIS::USER, StringArray(user));
+	FSRequest request(url, *this);
+	Response resp = request.request(StringPairArray(), String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		var response = resp.second;
+		FSUser returnedUser(response);
+		return returnedUser;
+	}
+
+	return FSUser();
+}
+
+SoundList FreesoundClient::getUserSounds(String username, String descriptorsFilter, int page, int pageSize, String fields, String descriptors, int normalized)
+{
+	StringPairArray params;
+
+	if (descriptorsFilter.isNotEmpty()) {
+		params.set("descriptors_filter", descriptorsFilter);
+	}
+
+	if (page != -1) {
+		params.set("page", String(page));
+	}
+
+	if (pageSize != -1) {
+		params.set("page_size", String(pageSize));
+	}
+
+	if (fields.isNotEmpty()) {
+		params.set("fields", fields);
+	}
+
+	if (descriptors.isNotEmpty()) {
+		params.set("descriptors", descriptors);
+	}
+
+	if (normalized != 0) {
+		params.set("normalized", "1");
+	}
+
+	URL url = URIS::uri(URIS::USER_SOUNDS, username);
+	FSRequest request(url, *this);
+	Response resp = request.request(params, String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		var response = resp.second;
+		SoundList returnedSounds(response);
+		return returnedSounds;
+	}
+	return SoundList();
+}
+
+
+
+
+
+
 
 
 
@@ -474,19 +665,29 @@ FSSound::FSSound(var sound)
 
 }
 
-FSUser::FSUser(String username)
+URL FSSound::getDownload()
 {
-	URL profile;
-	String username;
-	String about;
-	URL homepage;
-	var avatar;
-	String dateJoined;
-	int numSounds;
-	SoundList sounds;
-	int numPacks;
-	//URL packs;
-	int numPosts;
-	int numComments;
+	return download;
+}
+
+FSUser::FSUser()
+{
+}
+
+FSUser::FSUser(var user)
+{
+	profile = URL(user["url"]);
+	about = user["about"];
+	username = user["username"];
+	homepage = URL(user["homepage"]);
+	avatar = user["avatar"];
+	dateJoined = user["date_joined"];
+	numSounds = user["num_sounds"];
+	sounds = URL(user["sounds"]);
+	numPacks = user["num_packs"];
+	packs = URL(user["packs"]);
+	numPosts = user["num_posts"];
+	numComments = user["num_comments"];
+	bookmarks = URL(user["bookmarks"]);
 
 }
