@@ -592,12 +592,12 @@ Response FSRequest::request(StringPairArray params, String data, bool postLikeRe
 	return Response(statusCode, var());
 }
 
-SoundList::SoundList()
+FSList::FSList()
 {
 	count = 0;
 }
 
-SoundList::SoundList(var response)
+FSList::FSList(var response)
 {
 	count = response["count"]; //getIntValue
 	nextPage = response["next"];
@@ -605,17 +605,17 @@ SoundList::SoundList(var response)
 	results = response["results"];
 }
 
-String SoundList::getNextPage()
+String FSList::getNextPage()
 {
 	return nextPage;
 }
 
-String SoundList::getPreviousPage()
+String FSList::getPreviousPage()
 {
 	return previousPage;
 }
 
-var SoundList::getResults()
+var FSList::getResults()
 {
 	return results;
 }

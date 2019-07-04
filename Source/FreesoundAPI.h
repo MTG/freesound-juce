@@ -17,7 +17,7 @@
 typedef std::pair<int, var> Response;
 typedef std::function<void()> AuthorizationCallback;
 
-class SoundList {
+class FSList {
 private:
 	int count;
 	String nextPage;
@@ -25,14 +25,18 @@ private:
 	var results;
 public:
 
-	SoundList();
-	SoundList(var response);
+	FSList();
+	FSList(var response);
 
 	String getNextPage();
 	String getPreviousPage();
 
 	var getResults();
 
+};
+
+class SoundList : public FSList{
+	using FSList::FSList;
 };
 
 class URIS {
@@ -141,11 +145,6 @@ public:
 	FSSound(var sound);
 	URL getDownload();
 };
-
-
-
-
-
 
 class FreesoundClient{
 	
