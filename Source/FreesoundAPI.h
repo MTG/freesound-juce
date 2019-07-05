@@ -15,7 +15,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 
 typedef std::pair<int, var> Response;
-typedef std::function<void()> AuthorizationCallback;
+typedef std::function<void()> Callback;
 
 class FSList {
 private:
@@ -105,6 +105,24 @@ public:
 	FSUser(var user);
 };
 
+class FSPack {
+private: 
+	String id;
+	URL url;
+	String description;
+	String created;
+	String name;
+	String username;
+	int numSounds;
+	URL sounds;
+	int numDownloads;
+
+public:
+	FSPack();
+	FSPack(var pack);
+	String getID();
+};
+
 class FSSound {
 private:
 	int id;
@@ -173,9 +191,9 @@ public:
 	FreesoundClient(String secret);
 	//For OAuth2 authorization
 	FreesoundClient(String id, String secret);
-	bool authenticationOnBrowser(int mode=0);
-	int exchangeToken(String authCode);
-	int refreshAccessToken();
+	void authenticationOnBrowser(int mode=0, Callback cb = [] {});
+	void exchangeToken(String authCode, Callback cb = [] {});
+	void refreshAccessToken(Callback cb = [] {});
 	SoundList textSearch(String query, String filter=String(), String sort="score", int groupByPack=0, int page=-1, int pageSize=-1, String fields = String(), String descriptors = String(), int normalized=0);
 	SoundList contentSearch(String target, String descriptorsFilter=String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
 	//SoundList contentSearchFile(File analysisFile, String descriptorsFilter, int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
@@ -184,17 +202,20 @@ public:
 	FSSound getSound(String id);
 	var getSoundAnalysis(String id, String descriptors = String(), int normalized = 0);
 	SoundList getSimilarSounds(String id, String descriptorsFilter = String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
-	void downloadSound(FSSound sound, const File &location);
-	int uploadSound(const File &fileToUpload, String tags, String description, String name = String(), String license = "Creative Commons 0", String pack = String(), String geotag = String());
+	URL::DownloadTask* downloadSound(FSSound sound, const File &location, URL::DownloadTask::Listener * listener = nullptr);
+	int uploadSound(const File &fileToUpload, String tags, String description, String name = String(), String license = "Creative Commons 0", String pack = String(), String geotag = String(), Callback cb = [] {});
 	//int describeSound()
 	//int pendingUploads()
-	int editSoundDescription(String id, String name = String(), String tags = String(), String description = String(), String license = String(), String pack = String(), String geotag = String());
-	int bookmarkSound(String id, String name = String(), String category = String());
-	int rateSound(String id, int rating);
-	int commentSound(String id, String comment);
+	void editSoundDescription(String id, String name = String(), String tags = String(), String description = String(), String license = String(), String pack = String(), String geotag = String(), Callback cb = [] {});
+	void bookmarkSound(String id, String name = String(), String category = String(), Callback cb = [] {});
+	void rateSound(String id, int rating, Callback cb = [] {});
+	void commentSound(String id, String comment, Callback cb = [] {});
 	FSUser getUser(String user);
 	SoundList getUserSounds(String username, String descriptorsFilter = String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
-
+	FSPack getPack(String id);
+	SoundList getPackSounds(String id, String descriptorsFilter = String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
+	URL::DownloadTask* downloadPack(FSPack pack, const File &location, URL::DownloadTask::Listener * listener = nullptr);
+	FSUser getMe();
 	bool isTokenNotEmpty();
 	String getToken();
 	String getHeader();
@@ -205,12 +226,10 @@ public:
 
 class FreesoundClientComponent : public FreesoundClient, public WebBrowserComponent {
 private:
-	AuthorizationCallback authCallback;
 	String authCode;
 public:
-	bool startAuthentication(int mode = 0);
-	void setAuthCallback(AuthorizationCallback cb);
-	void pageFinishedLoading(const String & url);
+	void startAuthentication(int mode = 0);
+	void pageFinishedLoading(const String & url, Callback authCallback = [] {});
 	void pageLoadHadNetworkError();
 
 };

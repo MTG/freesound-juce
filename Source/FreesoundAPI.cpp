@@ -68,7 +68,7 @@ FreesoundClient::FreesoundClient(String id, String secret)
 }
 
 //Function for doing the authorization, the mode selects between LOGOUT_AUTHORIZE(0) and AUTHORIZE(1)
-bool FreesoundClient::authenticationOnBrowser(int mode)
+void FreesoundClient::authenticationOnBrowser(int mode, Callback cb)
 {
 	URL url;
 	if(mode == 0){url = URIS::uri(URIS::LOGOUT_AUTHORIZE, StringArray());}
@@ -76,10 +76,10 @@ bool FreesoundClient::authenticationOnBrowser(int mode)
 	url = url.withParameter("client_id", clientID);
 	url = url.withParameter("response_type", "code");
 	url.launchInDefaultBrowser();
-	return true;
+	cb();
 }
 
-int FreesoundClient::exchangeToken(String authCode)
+void FreesoundClient::exchangeToken(String authCode, Callback cb)
 {
 	StringPairArray params;
 	params.set("client_id", clientID);
@@ -97,10 +97,10 @@ int FreesoundClient::exchangeToken(String authCode)
 		refreshToken = response["refresh_token"];
 		header = "Bearer " + accessToken;
 	}
-	return resp.first;
+	cb();
 }
 
-int FreesoundClient::refreshAccessToken() {
+void FreesoundClient::refreshAccessToken(Callback cb) {
 	StringPairArray params;
 	params.set("client_id", clientID);
 	params.set("client_secret", clientSecret);
@@ -117,7 +117,7 @@ int FreesoundClient::refreshAccessToken() {
 		refreshToken = response["refresh_token"];
 		header = "Bearer " + accessToken;
 	}
-	return resp.first;
+	cb();
 }
 
 // https://freesound.org/docs/api/resources_apiv2.html#text-search
@@ -310,13 +310,13 @@ SoundList FreesoundClient::getSimilarSounds(String id, String descriptorsFilter,
 	return SoundList();
 }
 
-void FreesoundClient::downloadSound(FSSound sound, const File & location)
+URL::DownloadTask* FreesoundClient::downloadSound(FSSound sound, const File & location, URL::DownloadTask::Listener * listener)
 {
 	URL address = sound.getDownload();
-	address.downloadToFile(location, this->header);
+	return address.downloadToFile(location, this->header, listener);
 }
 
-int FreesoundClient::uploadSound(const File & fileToUpload, String tags, String description, String name, String license, String pack, String geotag)
+int FreesoundClient::uploadSound(const File & fileToUpload, String tags, String description, String name, String license, String pack, String geotag, Callback cb)
 {
 	StringPairArray params;
 
@@ -343,13 +343,14 @@ int FreesoundClient::uploadSound(const File & fileToUpload, String tags, String 
 	int resultCode = resp.first;
 	if (resultCode == 200) {
 		var response = resp.second;
+		cb();
 		return response["id"];
 	}
-
+	cb();
 	return 0;
 }
 
-int FreesoundClient::editSoundDescription(String id, String name, String tags, String description, String license, String pack, String geotag)
+void FreesoundClient::editSoundDescription(String id, String name, String tags, String description, String license, String pack, String geotag, Callback cb)
 {
 	StringPairArray params;
 
@@ -382,13 +383,13 @@ int FreesoundClient::editSoundDescription(String id, String name, String tags, S
 	Response resp = request.request(params, String(), false);
 	int resultCode = resp.first;
 	if (resultCode == 200) {
-		return 1;
 	}
 
-	return -1;
+	cb();
+
 }
 
-int FreesoundClient::bookmarkSound(String id, String name, String category)
+void FreesoundClient::bookmarkSound(String id, String name, String category, Callback cb)
 {
 	StringPairArray params;
 
@@ -405,12 +406,11 @@ int FreesoundClient::bookmarkSound(String id, String name, String category)
 	Response resp = request.request(params, String(), false);
 	int resultCode = resp.first;
 	if (resultCode == 200) {
-		return 1;
 	}
-	return -1;
+	cb();
 }
 
-int FreesoundClient::rateSound(String id, int rating)
+void FreesoundClient::rateSound(String id, int rating, Callback cb)
 {
 	StringPairArray params;
 	params.set("rating", String(rating));
@@ -420,12 +420,12 @@ int FreesoundClient::rateSound(String id, int rating)
 	Response resp = request.request(params, String(), false);
 	int resultCode = resp.first;
 	if (resultCode == 200) {
-		return 1;
 	}
-	return -1;
+
+	cb();
 }
 
-int FreesoundClient::commentSound(String id, String comment)
+void FreesoundClient::commentSound(String id, String comment, Callback cb)
 {
 	StringPairArray params;
 	params.set("comment", comment);
@@ -435,9 +435,8 @@ int FreesoundClient::commentSound(String id, String comment)
 	Response resp = request.request(params, String(), false);
 	int resultCode = resp.first;
 	if (resultCode == 200) {
-		return 1;
 	}
-	return -1;
+	cb();
 }
 
 FSUser FreesoundClient::getUser(String user)
@@ -495,14 +494,83 @@ SoundList FreesoundClient::getUserSounds(String username, String descriptorsFilt
 	return SoundList();
 }
 
+FSPack FreesoundClient::getPack(String id)
+{
+	URL url = URIS::uri(URIS::PACK, StringArray(id));
+	FSRequest request(url, *this);
+	Response resp = request.request(StringPairArray(), String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		var response = resp.second;
+		FSPack returnedUser(response);
+		return returnedUser;
+	}
 
+	return FSPack();
+}
 
+SoundList FreesoundClient::getPackSounds(String id, String descriptorsFilter, int page, int pageSize, String fields, String descriptors, int normalized)
+{
+	StringPairArray params;
 
+	if (descriptorsFilter.isNotEmpty()) {
+		params.set("descriptors_filter", descriptorsFilter);
+	}
 
+	if (page != -1) {
+		params.set("page", String(page));
+	}
 
+	if (pageSize != -1) {
+		params.set("page_size", String(pageSize));
+	}
 
+	if (fields.isNotEmpty()) {
+		params.set("fields", fields);
+	}
 
+	if (descriptors.isNotEmpty()) {
+		params.set("descriptors", descriptors);
+	}
 
+	if (normalized != 0) {
+		params.set("normalized", "1");
+	}
+
+	URL url = URIS::uri(URIS::PACK_SOUNDS, StringArray(id));
+	FSRequest request(url, *this);
+	Response resp = request.request(params, String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		var response = resp.second;
+		SoundList returnedSounds(response);
+		return returnedSounds;
+	}
+	return SoundList();
+}
+
+URL::DownloadTask* FreesoundClient::downloadPack(FSPack pack, const File & location, URL::DownloadTask::Listener * listener)
+{
+
+	URL address = URIS::uri(URIS::PACK_DOWNLOAD, StringArray(pack.getID()));
+	return address.downloadToFile(location, this->header, listener);
+	
+}
+
+FSUser FreesoundClient::getMe()
+{
+	URL url = URIS::uri(URIS::ME, StringArray());
+	FSRequest request(url, *this);
+	Response resp = request.request(StringPairArray(), String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		var response = resp.second;
+		FSUser returnedUser(response);
+		return returnedUser;
+	}
+
+	return FSUser();
+}
 
 
 bool FreesoundClient::isTokenNotEmpty()
@@ -529,7 +597,7 @@ String FreesoundClient::getClientID()
 
 
 
-bool FreesoundClientComponent::startAuthentication(int mode)
+void FreesoundClientComponent::startAuthentication(int mode)
 {
 	URL url;
 	if (mode == 0) { url = URIS::uri(URIS::LOGOUT_AUTHORIZE, StringArray()); }
@@ -537,15 +605,11 @@ bool FreesoundClientComponent::startAuthentication(int mode)
 	url = url.withParameter("client_id", getClientID());
 	url = url.withParameter("response_type", "code");
 	goToURL(url.toString(true));
-	return true;
 }
 
-void FreesoundClientComponent::setAuthCallback(AuthorizationCallback cb)
-{
-	authCallback = cb;
-}
 
-void FreesoundClientComponent::pageFinishedLoading(const String &url) {
+
+void FreesoundClientComponent::pageFinishedLoading(const String &url, Callback authCallback) {
 	if (url.startsWith(URIS::CONFIRMATION)) {
 		URL recUrl(url);
 		StringArray paramNames = recUrl.getParameterNames();
@@ -690,4 +754,26 @@ FSUser::FSUser(var user)
 	numComments = user["num_comments"];
 	bookmarks = URL(user["bookmarks"]);
 
+}
+
+FSPack::FSPack()
+{
+}
+
+FSPack::FSPack(var pack)
+{
+	id = pack["id"];
+	url = URL(pack["url"]);
+	description = pack["description"];
+	created = pack["created"];
+	name = pack["name"];
+	username = pack["username"];
+	numSounds = pack["num_sounds"];
+	sounds = URL(pack["sounds"]);
+	numDownloads = pack["num_downloads"];
+}
+
+String FSPack::getID()
+{
+	return id;
 }

@@ -21,8 +21,8 @@ int testAuthBrowser(String id, String secret) {
 	std::cout << "Insert authorization code:\n";
 	std::cin >> authCode;
 	String sAuthCode(authCode);
-	std::cout << client.exchangeToken(authCode);
-	std::cout << client.refreshAccessToken();
+	client.exchangeToken(authCode);
+
 
 	return 1;
 }
