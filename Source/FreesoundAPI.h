@@ -18,7 +18,7 @@ typedef std::pair<int, var> Response;
 typedef std::function<void()> Callback;
 
 class FSList {
-private:
+protected:
 	int count;
 	String nextPage;
 	String previousPage;
@@ -32,12 +32,11 @@ public:
 	String getPreviousPage();
 
 	var getResults();
+	int getCount();
 
 };
 
-class SoundList : public FSList{
-	using FSList::FSList;
-};
+
 
 class URIS {
 
@@ -126,7 +125,7 @@ public:
 
 class FSSound {
 public:
-	int id;
+	String id;
 	URL url;
 	String name;
 	StringArray tags;
@@ -162,6 +161,12 @@ public:
 	FSSound();
 	FSSound(var sound);
 	URL getDownload();
+};
+
+class SoundList : public FSList {
+	using FSList::FSList;
+public:
+	Array<FSSound> toArrayOfSounds();
 };
 
 class FreesoundClient{

@@ -775,6 +775,11 @@ var FSList::getResults()
 	return results;
 }
 
+int FSList::getCount()
+{
+	return count;
+}
+
 FSSound::FSSound()
 {
 }
@@ -869,4 +874,16 @@ String FSPack::getID()
 	return id;
 }
 
+Array<FSSound> SoundList::toArrayOfSounds()
+{
 
+
+	Array<FSSound> arrayOfSounds;
+
+	for (int i = 0; i < results.size(); i++)
+	{
+		arrayOfSounds.add(FSSound(results[i]));
+	}
+
+	return arrayOfSounds;
+}
