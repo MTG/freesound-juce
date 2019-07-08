@@ -85,7 +85,8 @@ public:
 };
 
 class FSUser {
-private:
+
+public:
 	URL profile;
 	String username;
 	String about;
@@ -100,13 +101,13 @@ private:
 	int numComments;   
 	URL bookmarks;
 
-public:
 	FSUser();
 	FSUser(var user);
 };
 
 class FSPack {
-private: 
+
+public:
 	String id;
 	URL url;
 	String description;
@@ -117,14 +118,14 @@ private:
 	URL sounds;
 	int numDownloads;
 
-public:
+
 	FSPack();
 	FSPack(var pack);
 	String getID();
 };
 
 class FSSound {
-private:
+public:
 	int id;
 	URL url;
 	String name;
@@ -158,7 +159,6 @@ private:
 	URL analysisFrames;
 	var acAnalysis;
 
-public:
 	FSSound();
 	FSSound(var sound);
 	URL getDownload();
@@ -196,7 +196,6 @@ public:
 	void refreshAccessToken(Callback cb = [] {});
 	SoundList textSearch(String query, String filter=String(), String sort="score", int groupByPack=0, int page=-1, int pageSize=-1, String fields = String(), String descriptors = String(), int normalized=0);
 	SoundList contentSearch(String target, String descriptorsFilter=String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
-	//SoundList contentSearchFile(File analysisFile, String descriptorsFilter, int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
 	SoundList fetchNextPage(SoundList soundList);
 	SoundList fetchPreviousPage(SoundList soundList);
 	FSSound getSound(String id);
@@ -204,14 +203,17 @@ public:
 	SoundList getSimilarSounds(String id, String descriptorsFilter = String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
 	URL::DownloadTask* downloadSound(FSSound sound, const File &location, URL::DownloadTask::Listener * listener = nullptr);
 	int uploadSound(const File &fileToUpload, String tags, String description, String name = String(), String license = "Creative Commons 0", String pack = String(), String geotag = String(), Callback cb = [] {});
-	//int describeSound()
-	//int pendingUploads()
+	int describeSound(String uploadFilename, String description, String license, String name = String(), String tags = String(), String pack = String(), String geotag = String() );
+	var pendingUploads();
 	void editSoundDescription(String id, String name = String(), String tags = String(), String description = String(), String license = String(), String pack = String(), String geotag = String(), Callback cb = [] {});
 	void bookmarkSound(String id, String name = String(), String category = String(), Callback cb = [] {});
 	void rateSound(String id, int rating, Callback cb = [] {});
 	void commentSound(String id, String comment, Callback cb = [] {});
 	FSUser getUser(String user);
 	SoundList getUserSounds(String username, String descriptorsFilter = String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
+	FSList getUserBookmarkCategories(String username);
+	FSList getUserBookmarkCategoriesSounds(String username, String bookmarkCategory);
+	FSList getUserPacks(String username);
 	FSPack getPack(String id);
 	SoundList getPackSounds(String id, String descriptorsFilter = String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
 	URL::DownloadTask* downloadPack(FSPack pack, const File &location, URL::DownloadTask::Listener * listener = nullptr);

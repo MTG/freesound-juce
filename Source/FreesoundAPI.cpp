@@ -350,6 +350,52 @@ int FreesoundClient::uploadSound(const File & fileToUpload, String tags, String 
 	return 0;
 }
 
+int FreesoundClient::describeSound(String uploadFilename, String description, String license, String name, String tags, String pack, String geotag)
+{
+	StringPairArray params;
+	params.set("upload_filename", uploadFilename);
+	params.set("license", license);
+	params.set("description", description);
+
+
+	if (tags.isNotEmpty()) {
+		params.set("tags", tags);
+	}
+
+	if (name.isNotEmpty()) {
+		params.set("name", name);
+	}
+
+	if (pack.isNotEmpty()) {
+		params.set("pack", pack);
+	}
+
+	if (geotag.isNotEmpty()) {
+		params.set("geotag", geotag);
+	}
+
+	URL url = URIS::uri(URIS::DESCRIBE);
+	FSRequest request(url, *this);
+	Response resp = request.request(params, String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+	}
+
+	return resp.second["id"];
+}
+
+var FreesoundClient::pendingUploads()
+{
+	URL url = URIS::uri(URIS::PENDING);
+	FSRequest request(url, *this);
+	Response resp = request.request(StringPairArray(), String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+	}
+
+	return resp.second;
+}
+
 void FreesoundClient::editSoundDescription(String id, String name, String tags, String description, String license, String pack, String geotag, Callback cb)
 {
 	StringPairArray params;
@@ -492,6 +538,51 @@ SoundList FreesoundClient::getUserSounds(String username, String descriptorsFilt
 		return returnedSounds;
 	}
 	return SoundList();
+}
+
+FSList FreesoundClient::getUserBookmarkCategories(String username)
+{
+	URL url = URIS::uri(URIS::USER_BOOKMARK_CATEGORIES, username);
+	FSRequest request(url, *this);
+	Response resp = request.request(StringPairArray(), String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		var response = resp.second;
+		FSList returnedSounds(response);
+		return returnedSounds;
+	}
+	return FSList();
+}
+
+FSList FreesoundClient::getUserBookmarkCategoriesSounds(String username, String bookmarkCategory)
+{	
+	StringArray params;
+	params.add(username);
+	params.add(bookmarkCategory);
+	URL url = URIS::uri(URIS::USER_BOOKMARK_CATEGORY_SOUNDS, params);
+	FSRequest request(url, *this);
+	Response resp = request.request(StringPairArray(), String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		var response = resp.second;
+		FSList returnedSounds(response);
+		return returnedSounds;
+	}
+	return FSList();
+}
+
+FSList FreesoundClient::getUserPacks(String username)
+{
+	URL url = URIS::uri(URIS::USER_PACKS, username);
+	FSRequest request(url, *this);
+	Response resp = request.request(StringPairArray(), String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		var response = resp.second;
+		FSList returnedSounds(response);
+		return returnedSounds;
+	}
+	return FSList();
 }
 
 FSPack FreesoundClient::getPack(String id)
@@ -777,3 +868,5 @@ String FSPack::getID()
 {
 	return id;
 }
+
+
