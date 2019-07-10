@@ -47,15 +47,22 @@ int searchWithToken(String secret) {
 	return 1;
 }
 
-int testExamples(String id, String secret) {
-	FreesoundClient client(id, secret);
-	client.authenticationOnBrowser(1);
-	std::string authCode;
-	std::cout << "Insert authorization code:\n";
-	std::cin >> authCode;
-	String sAuthCode(authCode);
-	client.exchangeToken(authCode);
+int testExamples(String id, String secret, bool auth) {
+	
+	FreesoundClient client;
 
+	if (auth == true){
+		client = FreesoundClient(id, secret);
+		client.authenticationOnBrowser(1);
+		std::string authCode;
+		std::cout << "Insert authorization code:\n";
+		std::cin >> authCode;
+		String sAuthCode(authCode);
+		client.exchangeToken(authCode);
+	}
+	else {
+		client = FreesoundClient(secret);
+	}
 	FSSound sound = client.getSound("96541");
 	std::cout << "Sound name: " << sound.name << std::endl;
 	std::cout << "Sound URL: " << sound.url.toString(true) << std::endl;
@@ -65,7 +72,7 @@ int testExamples(String id, String secret) {
 	float spectralCentroid = analysis["lowlevel"]["spectral_centroid"]["mean"];
 	std::cout << "Sound Spectral Centroid Mean: " << spectralCentroid << std::endl;
 
-	SoundList similarSounds = client.getSimilarSounds(sound.id, "lowlevel.pitch.mean:[110 TO 180]", -1, 10, "name,username");
+	SoundList similarSounds = client.getSimilarSounds(sound.id, "lowlevel.pitch.mean:[110 TO 180]", -1, 10, "name,username,download");
 	Array<FSSound> arrayOfSimilarSounds = similarSounds.toArrayOfSounds();
 	String name, username;
 	for (int i = 0; i < arrayOfSimilarSounds.size(); i++) {
@@ -75,7 +82,7 @@ int testExamples(String id, String secret) {
 	}
 	
 	std::cout << "Searching for 'violoncello':" << std::endl;
-	SoundList textSearch = client.textSearch("violoncello", "tag:tenuto duration:[1.0 TO 15.0]", "rating_desc", 0, -1, -1, "id,name,previews,username");
+	SoundList textSearch = client.textSearch("violoncello", "tag:tenuto duration:[1.0 TO 15.0]", "rating_desc", 0, -1, -1, "id,name,previews,username,download");
 	std::cout << "Num results." << textSearch.getCount() << std::endl;
 	std::cout << "Page1: " << std::endl;
 	Array<FSSound> arrayOfSearch = textSearch.toArrayOfSounds();
@@ -93,6 +100,9 @@ int testExamples(String id, String secret) {
 		username = arrayOfSearch[i].user;
 		std::cout << "Sound Name: " << name << " Username: " << username << std::endl;
 	}
+
+	//Sound download example
+	client.downloadSound(arrayOfSearch[1], File::getSpecialLocation(File::userDesktopDirectory));
 
 	std::cout << "Content Based Search" << std::endl;
 	SoundList contentSearch = client.contentSearch("lowlevel.pitch_salience.mean:1.0 lowlevel.pitch.mean:440", "lowlevel.pitch.var:[* TO 20]");
@@ -163,7 +173,7 @@ int main (int argc, char* argv[])
 	String id = "qtRxJcdBeEqAPPymT71w";
 
 	//testAuthBrowser(id, secret);
-	testExamples(id,secret);
+	testExamples(id,secret,true);
 
 
     return 1;
