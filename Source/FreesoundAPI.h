@@ -1,7 +1,7 @@
 /*
   ==============================================================================
 
-	A python client for the Freesound API.
+	A JUCE client for the Freesound API.
 	
 	Find the API documentation at http://www.freesound.org/docs/api/.
 	
@@ -13,7 +13,7 @@
 
 
     Created: 30 May 2019 12:49:28pm
-    Author:  Antonio Ramires (Music Technology Group - Universitat Pompeu Fabra
+    Author:  Antonio Ramires (Music Technology Group - Universitat Pompeu Fabra)
 
   ==============================================================================
 */
