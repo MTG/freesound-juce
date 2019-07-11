@@ -27,6 +27,7 @@ int testAuthBrowser(String id, String secret) {
 	return 1;
 }
 
+//Simple search with token authorization
 int searchWithToken(String secret) {
 	FreesoundClient client(secret);
 	SoundList list = client.textSearch("bass");
@@ -36,7 +37,6 @@ int searchWithToken(String secret) {
 	var results = list.getResults();
 	std::cout << JSON::toString(results);
 
-	//Adicionar parametros extra na pesquisa
 	list = client.textSearch("alarm", "tag:guitar", "score", 0, -1, -1, "name,previews,analysis", "lowlevel.spectral_centroid.mean,lowlevel.pitch.mean");
 	std::cout << list.getResults().size();
 	results = list.getResults();
@@ -51,6 +51,8 @@ int testExamples(String id, String secret, bool auth) {
 	
 	FreesoundClient client;
 
+	//Does either the token authorization (auth==false) or the OAuth2 authorization(auth=true)
+
 	if (auth == true){
 		client = FreesoundClient(id, secret);
 		client.authenticationOnBrowser(1);
@@ -63,6 +65,8 @@ int testExamples(String id, String secret, bool auth) {
 	else {
 		client = FreesoundClient(secret);
 	}
+
+	//Get sound info example
 	FSSound sound = client.getSound("96541");
 	std::cout << "Sound name: " << sound.name << std::endl;
 	std::cout << "Sound URL: " << sound.url.toString(true) << std::endl;
@@ -72,6 +76,7 @@ int testExamples(String id, String secret, bool auth) {
 	float spectralCentroid = analysis["lowlevel"]["spectral_centroid"]["mean"];
 	std::cout << "Sound Spectral Centroid Mean: " << spectralCentroid << std::endl;
 
+	//Get similar sounds example
 	SoundList similarSounds = client.getSimilarSounds(sound.id, "lowlevel.pitch.mean:[110 TO 180]", -1, 10, "name,username,download");
 	Array<FSSound> arrayOfSimilarSounds = similarSounds.toArrayOfSounds();
 	String name, username;
@@ -81,6 +86,7 @@ int testExamples(String id, String secret, bool auth) {
 		std::cout << "Sound Name: " << name << " Username: " << username << std::endl;
 	}
 	
+	// Search Example
 	std::cout << "Searching for 'violoncello':" << std::endl;
 	SoundList textSearch = client.textSearch("violoncello", "tag:tenuto duration:[1.0 TO 15.0]", "rating_desc", 0, -1, -1, "id,name,previews,username,download");
 	std::cout << "Num results." << textSearch.getCount() << std::endl;
@@ -104,6 +110,7 @@ int testExamples(String id, String secret, bool auth) {
 	//Sound download example
 	client.downloadSound(arrayOfSearch[1], File::getSpecialLocation(File::userDesktopDirectory));
 
+	//Content based search example
 	std::cout << "Content Based Search" << std::endl;
 	SoundList contentSearch = client.contentSearch("lowlevel.pitch_salience.mean:1.0 lowlevel.pitch.mean:440", "lowlevel.pitch.var:[* TO 20]");
 	std::cout << "Num results." << contentSearch.getCount() << std::endl;
@@ -114,7 +121,7 @@ int testExamples(String id, String secret, bool auth) {
 		std::cout << "Sound Name: " << name << " Username: " << username << std::endl;
 	}
 		
-
+	//Getting sounds from a user example
 	std::cout << "User Sounds:" << std::endl;
 	FSUser user = client.getUser("Jovica");
 	std::cout << "Username:" << user.username << std::endl;
@@ -127,7 +134,7 @@ int testExamples(String id, String secret, bool auth) {
 		std::cout << "Sound Name: " << name << " Username: " << username << std::endl;
 	}
 
-
+	//Getting sounds from a user example specifying some request parameters
 	std::cout << "User Sounds, with parameters:" << std::endl;
 	userSounds = client.getUserSounds(user.username, String(), -1,10, "name,username,samplerate,duration,analysis", "rhythm.bpm");
 	std::cout << "Num results." << userSounds.getCount() << std::endl;
@@ -139,6 +146,7 @@ int testExamples(String id, String secret, bool auth) {
 		std::cout << "SampleRate: " << arrayOfSearch[i].samplerate << "Duration: " << arrayOfSearch[i].duration << std::endl;
 	}
 
+	// Getting sounds from a pack example specifying some request parameters
 	std::cout << "Pack sounds specifying some request parameters:" << std::endl;
 	FSPack pack = client.getPack("3524");
 	std::cout << "Pack name: " << pack.name << std::endl;
@@ -149,7 +157,7 @@ int testExamples(String id, String secret, bool auth) {
 		username = arrayOfSearch[i].user;
 		std::cout << "Sound Name: " << name << " Username: " << username << std::endl;
 	}
-
+	// Getting bookmark categories from a user example
 	std::cout << "User bookmark categories:" << std::endl;
 	
 	FSUser userBookmark = client.getUser("frederic.font");
@@ -169,8 +177,8 @@ int main (int argc, char* argv[])
 	argv;
     // ..your code goes here!
 
-	String secret = "xlMDWbwEp65jNneniFiwNe3u7aKyxBPKrxug05KC";
-	String id = "qtRxJcdBeEqAPPymT71w";
+	String secret = "";
+	String id = "";
 
 	//testAuthBrowser(id, secret);
 	testExamples(id,secret,true);

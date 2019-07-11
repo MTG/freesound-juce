@@ -206,6 +206,32 @@ SoundList FreesoundClient::contentSearch(String target, String descriptorsFilter
 	return SoundList();
 }
 
+FSList FreesoundClient::fetchNextPage(FSList soundList)
+{
+	FSRequest request(soundList.getNextPage(), *this);
+	Response resp = request.request(StringPairArray(), String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		var response = resp.second;
+		FSList returnedSounds(response);
+		return returnedSounds;
+	}
+	return FSList();
+}
+
+FSList FreesoundClient::fetchPreviousPage(FSList soundList)
+{
+	FSRequest request(soundList.getPreviousPage(), *this);
+	Response resp = request.request(StringPairArray(), String(), false);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		var response = resp.second;
+		FSList returnedSounds(response);
+		return returnedSounds;
+	}
+	return FSList();
+}
+
 SoundList FreesoundClient::fetchNextPage(SoundList soundList)
 {
 	FSRequest request(soundList.getNextPage(), *this);
@@ -232,11 +258,16 @@ SoundList FreesoundClient::fetchPreviousPage(SoundList soundList)
 	return SoundList();
 }
 
-FSSound FreesoundClient::getSound(String id)
+FSSound FreesoundClient::getSound(String id, String fields)
 {
 	URL url = URIS::uri(URIS::SOUND, StringArray(id));
+	StringPairArray params;
+	if (fields.isNotEmpty()) {
+		params.set("fields", fields);
+	}
+	
 	FSRequest request(url, *this);
-	Response resp = request.request(StringPairArray(), String(), false);
+	Response resp = request.request(params, String(), false);
 	int resultCode = resp.first;
 	if (resultCode == 200) {
 		var response = resp.second;

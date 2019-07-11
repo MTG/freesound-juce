@@ -1,9 +1,19 @@
 /*
   ==============================================================================
 
-    FreesoundAPI.h
+	A python client for the Freesound API.
+	
+	Find the API documentation at http://www.freesound.org/docs/api/.
+	
+	Apply for an API key at http://www.freesound.org/api/apply/.
+	
+	The client automatically maps function arguments to http parameters of the API.
+	JSON results are converted to JUCE objects. The main object types (Sound,
+	User, Pack) are augmented with the corresponding API calls.
+
+
     Created: 30 May 2019 12:49:28pm
-    Author:  Antonio
+    Author:  Antonio Ramires (Music Technology Group - Universitat Pompeu Fabra
 
   ==============================================================================
 */
@@ -24,7 +34,8 @@ typedef std::pair<int, var> Response;
 /**
  * \typedef	std::function<void()> Callback
  *
- * \brief	Defines an alias representing the callback
+ * \brief	Defines an alias representing a void callback function, to be called when
+ *			the calls to the API finish
  */
 
 typedef std::function<void()> Callback;
@@ -32,7 +43,9 @@ typedef std::function<void()> Callback;
 /**
  * \class	FSList
  *
- * \brief	List of file systems.
+ * \brief	Class representing a page from a Freesound response. Contains methods for 
+ *			automatically paging through the different pages, knowing the number of 
+ *			total results and the results on the page.
  *
  * \author	Antonio
  * \date	09/07/2019
@@ -40,20 +53,20 @@ typedef std::function<void()> Callback;
 
 class FSList {
 protected:
-	/** \brief	Number of */
+	/** \brief	Total number of results returned from the FS response */
 	int count;
-	/** \brief	The next page */
+	/** \brief	URL for accessing the next page of results */
 	String nextPage;
-	/** \brief	The previous page */
+	/** \brief	URL for accessing the previous page of results */
 	String previousPage;
-	/** \brief	The results */
+	/** \brief	var variable containing the results of the page */
 	var results;
 public:
 
 	/**
 	 * \fn	FSList::FSList();
 	 *
-	 * \brief	Default constructor
+	 * \brief	Default constructor, creates an empty object
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
@@ -64,12 +77,14 @@ public:
 	/**
 	 * \fn	FSList::FSList(var response);
 	 *
-	 * \brief	Constructor
+	 * \brief	Constructor from the var object which contains the response from FS API,
+	 *			automatically obtaining the next and previous page; the total of results
+	 *			and the results of the page
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	response	The response.
+	 * \param	response	The response from a FS API call which returns a list.
 	 */
 
 	FSList(var response);
@@ -77,12 +92,12 @@ public:
 	/**
 	 * \fn	String FSList::getNextPage();
 	 *
-	 * \brief	Gets the next page
+	 * \brief	Returns the URL for the next page
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \returns	The next page.
+	 * \returns	The next page URL.
 	 */
 
 	String getNextPage();
@@ -90,12 +105,12 @@ public:
 	/**
 	 * \fn	String FSList::getPreviousPage();
 	 *
-	 * \brief	Gets the previous page
+	 * \brief	Returns the URL for the previous page
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \returns	The previous page.
+	 * \returns	The previous page URL.
 	 */
 
 	String getPreviousPage();
@@ -103,12 +118,12 @@ public:
 	/**
 	 * \fn	var FSList::getResults();
 	 *
-	 * \brief	Gets the results
+	 * \brief	Returns the results from the current page
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \returns	The results.
+	 * \returns	The results of the current page.
 	 */
 
 	var getResults();
@@ -116,12 +131,12 @@ public:
 	/**
 	 * \fn	int FSList::getCount();
 	 *
-	 * \brief	Gets the count
+	 * \brief	Gets the number of entries in the complete list
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \returns	The count.
+	 * \returns	The count of entries in the list.
 	 */
 
 	int getCount();
@@ -131,7 +146,8 @@ public:
 /**
  * \class	URIS
  *
- * \brief	An uris.
+ * \brief	A class which cointains all variables and methods for creating URL objects
+ *			for performing the queries to Freesound
  *
  * \author	Antonio
  * \date	09/07/2019
@@ -141,73 +157,73 @@ class URIS {
 
 public:
 
-	/** \brief	The host */
+	/** \brief	Freesound website */
 	static String HOST;
-	/** \brief	The base */
+	/** \brief	The base URL for the requests*/
 	static String BASE;
-	/** \brief	The text search */
+	/** \brief	The text search resource*/
 	static String TEXT_SEARCH;
-	/** \brief	The content search */
+	/** \brief	The content search resource*/
 	static String CONTENT_SEARCH;
-	/** \brief	The combined search */
+	/** \brief	The combined search resource, not implemented*/
 	static String COMBINED_SEARCH;
-	/** \brief	The sound */
+	/** \brief	The sound instance resource*/
 	static String SOUND;
-	/** \brief	The sound analysis */
+	/** \brief	The sound analysis resource */
 	static String SOUND_ANALYSIS;
-	/** \brief	The similar sounds */
+	/** \brief	The similar sounds resource */
 	static String SIMILAR_SOUNDS;
-	/** \brief	The comments */
+	/** \brief	The sound comments resource*/
 	static String COMMENTS;
-	/** \brief	The download */
+	/** \brief	The download sound resource*/
 	static String DOWNLOAD;
-	/** \brief	The upload */
+	/** \brief	The upload sound resource*/
 	static String UPLOAD;
-	/** \brief	The describe */
+	/** \brief	The describe sound resource*/
 	static String DESCRIBE;
-	/** \brief	The pending */
+	/** \brief	The pending uploads resource*/
 	static String PENDING;
-	/** \brief	The bookmark */
+	/** \brief	The bookmark sound resource*/
 	static String BOOKMARK;
-	/** \brief	The rate */
+	/** \brief	The rate sound resource*/
 	static String RATE;
-	/** \brief	The comment */
+	/** \brief	The comment sound resource*/
 	static String COMMENT;
-	/** \brief	The authorize */
+	/** \brief	The authorization resource */
 	static String AUTHORIZE;
-	/** \brief	The logout */
+	/** \brief	The logout resource*/
 	static String LOGOUT;
-	/** \brief	The logout authorize */
+	/** \brief	The logout and authorize resource*/
 	static String LOGOUT_AUTHORIZE;
-	/** \brief	The access token */
+	/** \brief	The get access token resource*/
 	static String ACCESS_TOKEN;
-	/** \brief	me */
+	/** \brief	The me resource*/
 	static String ME;
-	/** \brief	The user */
+	/** \brief	The user instance resource*/
 	static String USER;
-	/** \brief	The user sounds */
+	/** \brief	The get user sounds resource*/
 	static String USER_SOUNDS;
-	/** \brief	The user packs */
+	/** \brief	The get user packs resource*/
 	static String USER_PACKS;
-	/** \brief	Categories the user bookmark belongs to */
+	/** \brief	The get user bookmark categories resources*/
 	static String USER_BOOKMARK_CATEGORIES;
-	/** \brief	The user bookmark category sounds */
+	/** \brief	The user bookmark category sounds resources*/
 	static String USER_BOOKMARK_CATEGORY_SOUNDS;
-	/** \brief	The pack */
+	/** \brief	The get pack instance resource*/
 	static String PACK;
 	/** \brief	The pack sounds */
 	static String PACK_SOUNDS;
-	/** \brief	The pack download */
+	/** \brief	The pack download resource*/
 	static String PACK_DOWNLOAD;
-	/** \brief	The confirmation */
+	/** \brief	The confirmation URL*/
 	static String CONFIRMATION;
-	/** \brief	The edit */
+	/** \brief	The edit sound resource*/
 	static String EDIT;
 
 	/**
 	 * \fn	URIS::URIS()
 	 *
-	 * \brief	Default constructor
+	 * \brief	Default constructor, creates an empty object
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
@@ -231,15 +247,16 @@ public:
 	/**
 	 * \fn	static URL URIS::uri(String uri, StringArray replacements = StringArray());
 	 *
-	 * \brief	Uris the given document
+	 * \brief	Creates an URL given a URI from the static URIS and a String array with
+	 *			the parameters
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
 	 * \param	uri				URI of the resource.
-	 * \param	replacements	(Optional) The replacements.
+	 * \param	replacements	(Optional) The arguments for the URL.
 	 *
-	 * \returns	An URL.
+	 * \returns	The URL for the request.
 	 */
 
 	static URL uri(String uri, StringArray replacements = StringArray());
@@ -248,7 +265,7 @@ public:
 /**
  * \class	FSUser
  *
- * \brief	A file system user.
+ * \brief	A class which represents a Freesound user and its information.
  *
  * \author	Antonio
  * \date	09/07/2019
@@ -257,37 +274,40 @@ public:
 class FSUser {
 
 public:
-	/** \brief	The profile */
+	/** \brief	The URL of the user profile in Freesound*/
 	URL profile;
 	/** \brief	The username */
 	String username;
-	/** \brief	The about */
+	/** \brief	The ‘about’ text of users’ profile (if indicated)*/
 	String about;
-	/** \brief	The homepage */
+	/** \brief	The URI of users’ homepage outside Freesound (if indicated)*/
 	URL homepage;
-	/** \brief	The avatar */
+	/** \brief	Dictionary including the URIs for the avatar of the user. 
+				The avatar is presented in three sizes Small, Medium and Large, which 
+				correspond to the three fields in the dictionary. 
+				If user has no avatar, this field is null.*/
 	var avatar;
-	/** \brief	The date joined */
+	/** \brief	The date when the user joined Freesound */
 	String dateJoined;
-	/** \brief	Number of sounds */
+	/** \brief	Number of sounds uploaded by the user*/
 	int numSounds;
-	/** \brief	The sounds */
+	/** \brief	The URI for a list of sounds by the user*/
 	URL sounds;
-	/** \brief	Number of packs */
+	/** \brief	The number of packs by the user*/
 	int numPacks;
-	/** \brief	The packs */
+	/** \brief	The URI for a list of packs by the user*/
 	URL packs;
-	/** \brief	Number of posts */
+	/** \brief	The number of forum posts by the user */
 	int numPosts;
-	/** \brief	Number of comments */
+	/** \brief	The number of comments that user made in other users’ sounds*/
 	int numComments;   
-	/** \brief	The bookmarks */
+	/** \brief	The URI for a list of bookmark categories by the user*/
 	URL bookmarks;
 
 	/**
 	 * \fn	FSUser::FSUser();
 	 *
-	 * \brief	Default constructor
+	 * \brief	Default constructor, creates an empy User object
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
@@ -298,12 +318,12 @@ public:
 	/**
 	 * \fn	FSUser::FSUser(var user);
 	 *
-	 * \brief	Constructor
+	 * \brief	Constructor from the response of a user instance request
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	user	The user.
+	 * \param	user	The response of a user instance request.
 	 */
 
 	FSUser(var user);
@@ -312,7 +332,7 @@ public:
 /**
  * \class	FSPack
  *
- * \brief	A file system pack.
+ * \brief	A class which implements the Pack instance.
  *
  * \author	Antonio
  * \date	09/07/2019
@@ -321,29 +341,29 @@ public:
 class FSPack {
 
 public:
-	/** \brief	The identifier */
+	/** \brief	The unique identifier of this pack*/
 	String id;
-	/** \brief	URL of the resource */
+	/** \brief	The URI for this pack on the Freesound website*/
 	URL url;
-	/** \brief	The description */
+	/** \brief	The URI for this pack on the Freesound website */
 	String description;
-	/** \brief	The created */
+	/** \brief	The date when the pack was created */
 	String created;
-	/** \brief	The name */
+	/** \brief	The name user gave to the pack */
 	String name;
-	/** \brief	The username */
+	/** \brief	Username of the creator of the pack */
 	String username;
-	/** \brief	Number of sounds */
+	/** \brief	The number of sounds in the pack */
 	int numSounds;
-	/** \brief	The sounds */
+	/** \brief	The URI for a list of sounds in the pack */
 	URL sounds;
-	/** \brief	Number of downloads */
+	/** \brief	The number of times this pack has been downloaded */
 	int numDownloads;
 
 	/**
 	 * \fn	FSPack::FSPack();
 	 *
-	 * \brief	Default constructor
+	 * \brief	Default constructor, creates an empty Pack object
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
@@ -354,12 +374,12 @@ public:
 	/**
 	 * \fn	FSPack::FSPack(var pack);
 	 *
-	 * \brief	Constructor
+	 * \brief	Constructor from the response of a pack instance request
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	pack	The pack.
+	 * \param	pack	 The response of a pack instance request.
 	 */
 
 	FSPack(var pack);
@@ -367,12 +387,12 @@ public:
 	/**
 	 * \fn	String FSPack::getID();
 	 *
-	 * \brief	Gets the identifier
+	 * \brief	Gets the identifier of the pack
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \returns	The identifier.
+	 * \returns The unique identifier of this pack.
 	 */
 
 	String getID();
@@ -381,7 +401,7 @@ public:
 /**
  * \class	FSSound
  *
- * \brief	A file system sound.
+ * \brief	A class which implements the Sound instance.
  *
  * \author	Antonio
  * \date	09/07/2019
@@ -389,76 +409,79 @@ public:
 
 class FSSound {
 public:
-	/** \brief	The identifier */
+	/** \brief	The sound’s unique identifier */
 	String id;
-	/** \brief	URL of the resource */
+	/** \brief	The URI for this sound on the Freesound website*/
 	URL url;
-	/** \brief	The name */
+	/** \brief	The name user gave to the sound*/
 	String name;
-	/** \brief	The tags */
+	/** \brief	An array of tags the user gave to the sound */
 	StringArray tags;
-	/** \brief	The description */
+	/** \brief	The description the user gave to the sound*/
 	String description;
-	/** \brief	The geotag */
+	/** \brief	Latitude and longitude of the geotag separated by spaces */
 	String geotag;
-	/** \brief	The created */
+	/** \brief	The date when the sound was uploaded */
 	String created;
-	/** \brief	The license */
+	/** \brief	The license under which the sound is available */
 	String license;
-	/** \brief	Describes the format to use */
+	/** \brief	The type of sound (wav, aif, aiff, mp3, m4a or flac) */
 	String format;
-	/** \brief	The channels */
+	/** \brief	The number of channels */
 	int channels;
-	/** \brief	The filesize */
+	/** \brief	The size of the file in bytes */
 	int filesize;
-	/** \brief	The bitrate */
+	/** \brief	The bit rate of the sound in kbps */
 	int bitrate;
-	/** \brief	The bitdepth */
+	/** \brief	The bit depth of the sound */
 	int bitdepth;
-	/** \brief	The duration */
+	/** \brief	The duration of the sound in seconds */
 	int duration;
-	/** \brief	The samplerate */
+	/** \brief	The samplerate of the sound */
 	int samplerate;
-	/** \brief	The user */
+	/** \brief	The username of the uploader of the sound */
 	String user;
-	/** \brief	The pack */
+	/** \brief	If the sound is part of a pack, this URI points to that pack’s API resource */
 	URL pack;
-	/** \brief	The download */
+	/** \brief	The URI for retrieving the original sound */
 	URL download;
-	/** \brief	The bookmark */
+	/** \brief	The URI for bookmarking the sound */
 	URL bookmark;
-	/** \brief	The images */
+	/** \brief	Dictionary containing the URIs for mp3 and ogg versions of the sound */
+	var previews;
+	/** \brief	Dictionary including the URIs for spectrogram and waveform visualizations of the sound */
 	var images;
-	/** \brief	Number of downloads */
+	/** \brief	The number of times the sound was downloaded */
 	int numDownloads;
-	/** \brief	The average rating */
+	/** \brief	The average rating of the sound */
 	float avgRating;
-	/** \brief	Number of ratings */
+	/** \brief	The number of times the sound was rated */
 	int numRatings;
-	/** \brief	The rate */
+	/** \brief	The URI for rating the sound */
 	URL rate;
-	/** \brief	The comments */
+	/** \brief	The URI of a paginated list of the comments of the sound */
 	URL comments;
-	/** \brief	Number of comments */
+	/** \brief	The number of comments */
 	int numComments;
-	/** \brief	The comment */
+	/** \brief	The URI to comment the sound*/
 	URL comment;
-	/** \brief	The similar sounds */
+	/** \brief	URI pointing to the similarity resource (to get a list of similar sounds) */
 	URL similarSounds;
-	/** \brief	The analysis */
+	/** \brief	Dictionary containing requested descriptors information according to the 
+				descriptors request parameter */
 	var analysis;
-	/** \brief	The analysis statistics */
+	/** \brief	URI pointing to the complete analysis results of the sound */
 	URL analysisStats;
-	/** \brief	The analysis frames */
+	/** \brief	The URI for retrieving a JSON file with analysis information for each frame of the sound */
 	URL analysisFrames;
-	/** \brief	The AC analysis */
+	/** \brief	Dictionary containing the results of the AudioCommons analysis for the given sound */
 	var acAnalysis;
 
 	/**
 	 * \fn	FSSound::FSSound();
 	 *
-	 * \brief	Default constructor
-	 *
+	 * \brief	Default constructor, creates an empty FSSound object
+	 *	
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 */
@@ -468,12 +491,12 @@ public:
 	/**
 	 * \fn	FSSound::FSSound(var sound);
 	 *
-	 * \brief	Constructor
+	 * \brief	Constructor from the response of a sound instance request
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	sound	The sound.
+	 * \param	sound	The response of a sound instance request
 	 */
 
 	FSSound(var sound);
@@ -481,12 +504,12 @@ public:
 	/**
 	 * \fn	URL FSSound::getDownload();
 	 *
-	 * \brief	Gets the download
+	 * \brief	Gets the sound download URL
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \returns	The download.
+	 * \returns	The sound download URL.
 	 */
 
 	URL getDownload();
@@ -495,7 +518,8 @@ public:
 /**
  * \class	SoundList
  *
- * \brief	List of sounds.
+ * \brief	A class which implements the sound list returned from certain queries to Freesound API,
+ *			which inherits FSList, containing a method to convert itself to an array of FSSounds.
  *
  * \author	Antonio
  * \date	09/07/2019
@@ -508,12 +532,12 @@ public:
 	/**
 	 * \fn	Array<FSSound> SoundList::toArrayOfSounds();
 	 *
-	 * \brief	Converts this object to an array of sounds
+	 * \brief	Creates a copy of this object as an array of FSSound
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \returns	This object as an Array&lt;FSSound&gt;
+	 * \returns	A copy of this object as an array of FSSound;
 	 */
 
 	Array<FSSound> toArrayOfSounds();
@@ -522,7 +546,8 @@ public:
 /**
  * \class	FreesoundClient
  *
- * \brief	A freesound client.
+ * \brief	The Freesound client class which is responsible for all authorization and
+ *			requests to the Freesound API
  *
  * \author	Antonio
  * \date	09/07/2019
@@ -535,7 +560,7 @@ private:
 	/**
 	 * \enum	Authorization
 	 *
-	 * \brief	Values that represent authorizations
+	 * \brief	Values that represent the possible authorization methods
 	 */
 
 	enum Authorization
@@ -545,9 +570,9 @@ private:
 		OAuth
 	};
 
-	/** \brief	The token */
+	/** \brief	Client secret/Api key */
 	String token;
-	/** \brief	Identifier for the client */
+	/** \brief	Client id of your API credential */
 	String clientID;
 	/** \brief	The client secret */
 	String clientSecret;
@@ -555,9 +580,9 @@ private:
 	String accessToken;
 	/** \brief	The refresh token */
 	String refreshToken;
-	/** \brief	The header */
+	/** \brief	The header for all the requests*/
 	String header;
-	/** \brief	The authentication */
+	/** \brief	The authentication type*/
 	Authorization auth;
 
 
@@ -566,39 +591,38 @@ public:
 	/**
 	 * \fn	FreesoundClient::FreesoundClient();
 	 *
-	 * \brief	Default constructor
+	 * \brief	Empty construtctor
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 */
 
 	FreesoundClient();
-	//For token based authorization
+
 
 	/**
 	 * \fn	FreesoundClient::FreesoundClient(String secret);
 	 *
-	 * \brief	Constructor
+	 * \brief	Constructor for token based authorization
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	secret	The secret.
+	 * \param	secret	The client secret.
 	 */
 
 	FreesoundClient(String secret);
-	//For OAuth2 authorization
 
 	/**
 	 * \fn	FreesoundClient::FreesoundClient(String id, String secret);
 	 *
-	 * \brief	Constructor
+	 * \brief	Constructor for OAuth2 authorization
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	id	  	The identifier.
-	 * \param	secret	The secret.
+	 * \param	id	  	The client ID.
+	 * \param	secret	The client secret.
 	 */
 
 	FreesoundClient(String id, String secret);
@@ -606,13 +630,13 @@ public:
 	/**
 	 * \fn	void FreesoundClient::authenticationOnBrowser(int mode=0, Callback cb = [] {});
 	 *
-	 * \brief	Authentication browser
+	 * \brief	Performs the first step of the authorization on the browser
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	mode	(Optional) The mode.
-	 * \param	cb  	(Optional) The cb.
+	 * \param	mode	(Optional) The login mode 0 = logout and authorize, 1 = authorize.
+	 * \param	cb  	(Optional) The callback function called in the end of the function.
 	 */
 
 	void authenticationOnBrowser(int mode=0, Callback cb = [] {});
@@ -620,13 +644,14 @@ public:
 	/**
 	 * \fn	void FreesoundClient::exchangeToken(String authCode, Callback cb = [] {});
 	 *
-	 * \brief	Exchange token
+	 * \brief	Exchange token is the 3rd step of the authorization proccess, where the
+	 *			authorization code is exchanged for an access token
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
 	 * \param	authCode	The authentication code.
-	 * \param	cb			(Optional) The cb.
+	 * \param	cb			(Optional) The callback function called in the end of the function.
 	 */
 
 	void exchangeToken(String authCode, Callback cb = [] {});
@@ -634,12 +659,12 @@ public:
 	/**
 	 * \fn	void FreesoundClient::refreshAccessToken(Callback cb = [] {});
 	 *
-	 * \brief	Refresh access token
+	 * \brief	Function for refreshing the access token, which expires in 24h
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	cb	(Optional) The cb.
+	 * \param	cb	(Optional) The callback function called in the end of the function.
 	 */
 
 	void refreshAccessToken(Callback cb = [] {});
@@ -647,22 +672,23 @@ public:
 	/**
 	 * \fn	SoundList FreesoundClient::textSearch(String query, String filter=String(), String sort="score", int groupByPack=0, int page=-1, int pageSize=-1, String fields = String(), String descriptors = String(), int normalized=0);
 	 *
-	 * \brief	Text search
+	 * \brief	This resource allows searching sounds in Freesound by matching their tags and other kinds of metadata.
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	query	   	The query.
-	 * \param	filter	   	(Optional) Specifies the filter.
-	 * \param	sort	   	(Optional) The sort.
-	 * \param	groupByPack	(Optional) The group by pack.
-	 * \param	page	   	(Optional) The page.
-	 * \param	pageSize   	(Optional) Size of the page.
-	 * \param	fields	   	(Optional) The fields.
-	 * \param	descriptors	(Optional) The descriptors.
-	 * \param	normalized 	(Optional) The normalized.
+	 * \param	query	   	The text query.
+	 * \param	filter	   	(Optional) Allows filtering query results.
+	 * \param	sort	   	(Optional) Indicates how query results should be sorted.
+	 * \param	groupByPack	(Optional) This parameter represents a boolean option to indicate whether to group packs
+	 *						in a single result
+	 * \param	page	   	(Optional) Query results are paginated, this parameter indicates what page should be returned.
+	 * \param	pageSize   	(Optional) Indicates the number of sounds per page to include in the result.
+	 * \param	fields	   	(Optional) Indicates which sound properties should be included in every sound of the response.
+	 * \param	descriptors	(Optional) Indicates which sound content-based descriptors should be included in every sound of the response.
+	 * \param	normalized 	(Optional) Indicates whether the returned sound content-based descriptors should be normalized or not.
 	 *
-	 * \returns	A SoundList.
+	 * \returns	A SoundList with the text search results.
 	 */
 
 	SoundList textSearch(String query, String filter=String(), String sort="score", int groupByPack=0, int page=-1, int pageSize=-1, String fields = String(), String descriptors = String(), int normalized=0);
@@ -675,77 +701,107 @@ public:
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	target			 	Target for the.
-	 * \param	descriptorsFilter	(Optional) A filter specifying the descriptors.
-	 * \param	page			 	(Optional) The page.
-	 * \param	pageSize		 	(Optional) Size of the page.
-	 * \param	fields			 	(Optional) The fields.
-	 * \param	descriptors		 	(Optional) The descriptors.
-	 * \param	normalized		 	(Optional) The normalized.
+	 * \param	target			 	Target for the content search.
+	 * \param	descriptorsFilter	(Optional) This parameter allows filtering query results by values of the content-based descriptors.
+	 * \param	page			 	(Optional) Query results are paginated, this parameter indicates what page should be returned.
+	 * \param	pageSize		 	(Optional) Indicates the number of sounds per page to include in the result.
+	 * \param	fields			 	(Optional) Indicates which sound properties should be included in every sound of the response.
+	 * \param	descriptors		 	(Optional) Indicates which sound content-based descriptors should be included in every sound of the response.
+	 * \param	normalized		 	(Optional) Indicates whether the returned sound content-based descriptors should be normalized or not.
 	 *
-	 * \returns	A SoundList.
+	 * \returns	A SoundList with the content search results.
 	 */
 
 	SoundList contentSearch(String target, String descriptorsFilter=String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
 
 	/**
-	 * \fn	SoundList FreesoundClient::fetchNextPage(SoundList soundList);
+	 * \fn	FSList FreesoundClient::fetchNextPage(FSList fslist);
 	 *
-	 * \brief	Fetches next page
+	 * \brief	Gets the next page of a SoundList
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	soundList	List of sounds.
+	 * \param	FSList	Next page of results.
 	 *
-	 * \returns	The next page.
+	 * \returns	The next page of results.
 	 */
 
-	SoundList fetchNextPage(SoundList soundList);
+	FSList fetchNextPage(FSList fslist);
 
 	/**
-	 * \fn	SoundList FreesoundClient::fetchPreviousPage(SoundList soundList);
+	 * \fn	FSList FreesoundClient::fetchPreviousPage(FSList fslist);
 	 *
-	 * \brief	Fetches previous page
+	 * \brief	Gets the previous page of a FSList
+	 * \author	Antonio
+	 * \date	09/07/2019
+	 *
+	 * \param	FSList	Previous page of results.
+	 *
+	 * \returns	The previous page of results.
+	 */
+
+	FSList fetchPreviousPage(FSList fslist);
+	
+	/**
+	 * \fn	SoundList FreesoundClient::fetchNextPage(SoundList fslist);
+	 *
+	 * \brief	Gets the next page of a SoundList
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	soundList	List of sounds.
+	 * \param	SoundList	Next page of results.
 	 *
-	 * \returns	The previous page.
+	 * \returns	The next page of results.
 	 */
 
-	SoundList fetchPreviousPage(SoundList soundList);
+	SoundList fetchNextPage(SoundList fslist);
+
+	/**
+	 * \fn	SoundList FreesoundClient::fetchPreviousPage(SoundList fslist);
+	 *
+	 * \brief	Gets the previous page of a SoundList
+	 *
+	 * \author	Antonio
+	 * \date	09/07/2019
+	 *
+	 * \param	SoundList	Previous page of results.
+	 *
+	 * \returns	The next page of results.
+	 */
+
+	SoundList fetchPreviousPage(SoundList fslist);
 
 	/**
 	 * \fn	FSSound FreesoundClient::getSound(String id);
 	 *
-	 * \brief	Gets a sound
+	 * \brief	Gets a sound instance from its id
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	id	The identifier.
+	 * \param	id		The sound’s unique identifier.
+	 * \param	fields	(Optional) Indicates which sound properties should be included in every sound of the response.
 	 *
-	 * \returns	The sound.
+	 * \returns	A FSSound instance.
 	 */
 
-	FSSound getSound(String id);
+	FSSound getSound(String id, String fields = String());
 
 	/**
 	 * \fn	var FreesoundClient::getSoundAnalysis(String id, String descriptors = String(), int normalized = 0);
 	 *
-	 * \brief	Gets sound analysis
+	 * \brief	Retrieves of analysis information (content-based descriptors) of a sound.
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	id		   	The identifier.
-	 * \param	descriptors	(Optional) The descriptors.
-	 * \param	normalized 	(Optional) The normalized.
+	 * \param	id		   	The sound’s unique identifier.
+	 * \param	descriptors	(Optional) Indicates which sound content-based descriptors should be included in every sound of the response.
+	 * \param	normalized 	(Optional) Indicates whether the returned sound content-based descriptors should be normalized or not.
 	 *
-	 * \returns	The sound analysis.
+	 * \returns	A var dictionary containing the results of the analysis
 	 */
 
 	var getSoundAnalysis(String id, String descriptors = String(), int normalized = 0);
@@ -753,20 +809,20 @@ public:
 	/**
 	 * \fn	SoundList FreesoundClient::getSimilarSounds(String id, String descriptorsFilter = String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
 	 *
-	 * \brief	Gets similar sounds
+	 * \brief	This resource allows the retrieval of sounds similar to the given sound target
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	id				 	The identifier.
-	 * \param	descriptorsFilter	(Optional) A filter specifying the descriptors.
-	 * \param	page			 	(Optional) The page.
-	 * \param	pageSize		 	(Optional) Size of the page.
-	 * \param	fields			 	(Optional) The fields.
-	 * \param	descriptors		 	(Optional) The descriptors.
-	 * \param	normalized		 	(Optional) The normalized.
+	 * \param	id				 	The id of the target sound.
+	 * \param	descriptorsFilter	(Optional) This parameter allows filtering query results by values of the content-based descriptors.
+	 * \param	page			 	(Optional) Query results are paginated, this parameter indicates what page should be returned.
+	 * \param	pageSize		 	(Optional) Indicates the number of sounds per page to include in the result.
+	 * \param	fields			 	(Optional) Indicates which sound properties should be included in every sound of the response.
+	 * \param	descriptors		 	(Optional) Indicates which sound content-based descriptors should be included in every sound of the response.
+	 * \param	normalized		 	(Optional) Indicates whether the returned sound content-based descriptors should be normalized or not.
 	 *
-	 * \returns	The similar sounds.
+	 * \returns	A SoundList with the sounds similar to a target.
 	 */
 
 	SoundList getSimilarSounds(String id, String descriptorsFilter = String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
@@ -774,14 +830,14 @@ public:
 	/**
 	 * \fn	URL::DownloadTask* FreesoundClient::downloadSound(FSSound sound, const File &location, URL::DownloadTask::Listener * listener = nullptr);
 	 *
-	 * \brief	Downloads the sound
+	 * \brief	This resource allows you to download a sound in its original format/quality
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param 		  	sound   	The sound.
-	 * \param 		  	location	The location.
-	 * \param [in,out]	listener	(Optional) If non-null, the listener.
+	 * \param 		  	sound   	The sound to be downloaded.
+	 * \param 		  	location	The location for the sound to be download.
+	 * \param [in,out]	listener	(Optional) If non-null, the listener for the download progress.
 	 *
 	 * \returns	Null if it fails, else a pointer to an URL::DownloadTask.
 	 */
@@ -791,21 +847,21 @@ public:
 	/**
 	 * \fn	int FreesoundClient::uploadSound(const File &fileToUpload, String tags, String description, String name = String(), String license = "Creative Commons 0", String pack = String(), String geotag = String(), Callback cb = [] {});
 	 *
-	 * \brief	Uploads a sound
+	 * \brief	Uploads a sound to Freesound
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
 	 * \param	fileToUpload	The file to upload.
-	 * \param	tags			The tags.
-	 * \param	description 	The description.
-	 * \param	name			(Optional) The name.
-	 * \param	license			(Optional) The license.
-	 * \param	pack			(Optional) The pack.
-	 * \param	geotag			(Optional) The geotag.
-	 * \param	cb				(Optional) The cb.
+	 * \param	tags			The tags that will be assigned to the sound. Separate tags with spaces and join multi-words with dashes (e.g. “tag1 tag2 tag3 cool-tag4”).
+	 * \param	description 	A textual description of the sound.
+	 * \param	name			(Optional) The name that will be given to the sound. If not provided, filename will be used.
+	 * \param	license			(Optional) The license of the sound. Must be either “Attribution”, “Attribution Noncommercial” or “Creative Commons 0”.
+	 * \param	pack			(Optional) The name of the pack where the sound should be included. 
+	 * \param	geotag			(Optional) Geotag information for the sound.
+	 * \param	cb				(Optional) The callback function called in the end of the function.
 	 *
-	 * \returns	An int.
+	 * \returns	The id of the uploaded sound.
 	 */
 
 	int uploadSound(const File &fileToUpload, String tags, String description, String name = String(), String license = "Creative Commons 0", String pack = String(), String geotag = String(), Callback cb = [] {});
@@ -818,13 +874,13 @@ public:
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	uploadFilename	Filename of the upload file.
-	 * \param	description   	The description.
-	 * \param	license		  	The license.
-	 * \param	name		  	(Optional) The name.
-	 * \param	tags		  	(Optional) The tags.
-	 * \param	pack		  	(Optional) The pack.
-	 * \param	geotag		  	(Optional) The geotag.
+	 * \param	uploadFilename	The filename of the sound to describe.
+	 * \param	description   	A textual description of the sound.
+	 * \param	license		  	The license of the sound. Must be either “Attribution”, “Attribution Noncommercial” or “Creative Commons 0”.
+	 * \param	name		  	(Optional) The name that will be given to the sound. If not provided, filename will be used.
+	 * \param	tags		  	(Optional) The tags that will be assigned to the sound. Separate tags with spaces and join multi-words with dashes (e.g. “tag1 tag2 tag3 cool-tag4”).
+	 * \param	pack		  	(Optional) The name of the pack where the sound should be included.
+	 * \param	geotag		  	(Optional) Geotag information for the sound.
 	 *
 	 * \returns	An int.
 	 */
@@ -834,12 +890,12 @@ public:
 	/**
 	 * \fn	var FreesoundClient::pendingUploads();
 	 *
-	 * \brief	Pending uploads
+	 * \brief	This resource allows you to retrieve a list of audio files uploaded by the Freesound user logged in using OAuth2 that have not yet been described, processed or moderated
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \returns	A var.
+	 * \returns	A dictionary with a list of audio files uploaded by the Freesound user.
 	 */
 
 	var pendingUploads();
@@ -852,14 +908,14 @@ public:
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	id		   	The identifier.
-	 * \param	name	   	(Optional) The name.
-	 * \param	tags	   	(Optional) The tags.
-	 * \param	description	(Optional) The description.
-	 * \param	license	   	(Optional) The license.
-	 * \param	pack	   	(Optional) The pack.
-	 * \param	geotag	   	(Optional) The geotag.
-	 * \param	cb		   	(Optional) The cb.
+	 * \param	id		   	The identifier of the sound.
+	 * \param	name	   	(Optional) The new name that will be given to the sound.
+	 * \param	tags	   	(Optional) The new tags that will be assigned to the sound.
+	 * \param	description	(Optional) The new textual description for the sound.
+	 * \param	license	   	(Optional) The new license of the sound. Must be either “Attribution”, “Attribution Noncommercial” or “Creative Commons 0”.
+	 * \param	pack	   	(Optional) The new name of the pack where the sound should be included. 
+	 * \param	geotag	   	(Optional) The new geotag information for the sound.
+	 * \param	cb		   	(Optional) The callback function called in the end of the function.
 	 */
 
 	void editSoundDescription(String id, String name = String(), String tags = String(), String description = String(), String license = String(), String pack = String(), String geotag = String(), Callback cb = [] {});
@@ -867,15 +923,15 @@ public:
 	/**
 	 * \fn	void FreesoundClient::bookmarkSound(String id, String name = String(), String category = String(), Callback cb = [] {});
 	 *
-	 * \brief	Bookmark sound
+	 * \brief	This resource allows you to bookmark an existing sound.
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	id			The identifier.
-	 * \param	name		(Optional) The name.
-	 * \param	category	(Optional) The category.
-	 * \param	cb			(Optional) The cb.
+	 * \param	id			The sound identifier.
+	 * \param	name		(Optional) The new name that will be given to the bookmark
+	 * \param	category	(Optional) The name of the category under the bookmark will be classified.
+	 * \param	cb			(Optional) The callback function called in the end of the function.
 	 */
 
 	void bookmarkSound(String id, String name = String(), String category = String(), Callback cb = [] {});
@@ -883,14 +939,14 @@ public:
 	/**
 	 * \fn	void FreesoundClient::rateSound(String id, int rating, Callback cb = [] {});
 	 *
-	 * \brief	Rate sound
+	 * \brief	This resource allows you to rate an existing sound.
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	id	  	The identifier.
-	 * \param	rating	The rating.
-	 * \param	cb	  	(Optional) The cb.
+	 * \param	id	  	The sound identifier.
+	 * \param	rating	Integer between 0 and 5 (both included) representing the rating for the sound.
+	 * \param	cb	  	(Optional) The callback function called in the end of the function.
 	 */
 
 	void rateSound(String id, int rating, Callback cb = [] {});
@@ -898,14 +954,14 @@ public:
 	/**
 	 * \fn	void FreesoundClient::commentSound(String id, String comment, Callback cb = [] {});
 	 *
-	 * \brief	Comment sound
+	 * \brief	This resource allows you to post a comment to an existing sound.
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	id	   	The identifier.
-	 * \param	comment	The comment.
-	 * \param	cb	   	(Optional) The cb.
+	 * \param	id	   	The sound identifier.
+	 * \param	comment	Comment for the sound.
+	 * \param	cb	   	(Optional) The callback function called in the end of the function.
 	 */
 
 	void commentSound(String id, String comment, Callback cb = [] {});
@@ -913,14 +969,14 @@ public:
 	/**
 	 * \fn	FSUser FreesoundClient::getUser(String user);
 	 *
-	 * \brief	Gets a user
+	 * \brief	This resource allows the retrieval of information about a particular Freesound user
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	user	The user.
+	 * \param	user	The username of the user.
 	 *
-	 * \returns	The user.
+	 * \returns	A FSUser instance of the user requested.
 	 */
 
 	FSUser getUser(String user);
@@ -928,20 +984,20 @@ public:
 	/**
 	 * \fn	SoundList FreesoundClient::getUserSounds(String username, String descriptorsFilter = String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
 	 *
-	 * \brief	Gets user sounds
+	 * \brief	This resource allows the retrieval of a list of sounds uploaded by a particular Freesound user.
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	username		 	The username.
-	 * \param	descriptorsFilter	(Optional) A filter specifying the descriptors.
-	 * \param	page			 	(Optional) The page.
-	 * \param	pageSize		 	(Optional) Size of the page.
-	 * \param	fields			 	(Optional) The fields.
-	 * \param	descriptors		 	(Optional) The descriptors.
-	 * \param	normalized		 	(Optional) The normalized.
+	 * \param	username		 	The username of the user.
+	 * \param	descriptorsFilter	(Optional) This parameter allows filtering query results by values of the content-based descriptors.
+	 * \param	page			 	(Optional) Query results are paginated, this parameter indicates what page should be returned.
+	 * \param	pageSize		 	(Optional) Indicates the number of sounds per page to include in the result.
+	 * \param	fields			 	(Optional) Indicates which sound properties should be included in every sound of the response.
+	 * \param	descriptors		 	(Optional) Indicates which sound content-based descriptors should be included in every sound of the response.
+	 * \param	normalized		 	(Optional) Indicates whether the returned sound content-based descriptors should be normalized or not.
 	 *
-	 * \returns	The user sounds.
+	 * \returns	A SoundList with the user sounds.
 	 */
 
 	SoundList getUserSounds(String username, String descriptorsFilter = String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
@@ -949,14 +1005,14 @@ public:
 	/**
 	 * \fn	FSList FreesoundClient::getUserBookmarkCategories(String username);
 	 *
-	 * \brief	Gets user bookmark categories
+	 * \brief	This resource allows the retrieval of a list of bookmark categories created by a particular Freesound user.
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	username	The username.
+	 * \param	username	The username of the user.
 	 *
-	 * \returns	The user bookmark categories.
+	 * \returns	A FSList with the user bookmark categories.
 	 */
 
 	FSList getUserBookmarkCategories(String username);
@@ -964,15 +1020,15 @@ public:
 	/**
 	 * \fn	FSList FreesoundClient::getUserBookmarkCategoriesSounds(String username, String bookmarkCategory);
 	 *
-	 * \brief	Gets user bookmark categories sounds
+	 * \brief	This resource allows the retrieval of a list of sounds from a bookmark category created by a particular Freesound user.
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	username			The username.
-	 * \param	bookmarkCategory	Category the bookmark belongs to.
+	 * \param	username			The username of the user.
+	 * \param	bookmarkCategory	The desired bookmark category.
 	 *
-	 * \returns	The user bookmark categories sounds.
+	 * \returns	A FSList with the user bookmark categories sounds.
 	 */
 
 	FSList getUserBookmarkCategoriesSounds(String username, String bookmarkCategory);
@@ -980,14 +1036,14 @@ public:
 	/**
 	 * \fn	FSList FreesoundClient::getUserPacks(String username);
 	 *
-	 * \brief	Gets user packs
+	 * \brief	This resource allows the retrieval of a list of packs created by a particular Freesound user.
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	username	The username.
+	 * \param	username	The username of the user.
 	 *
-	 * \returns	The user packs.
+	 * \returns	A FSList with the user packs.
 	 */
 
 	FSList getUserPacks(String username);
@@ -995,14 +1051,14 @@ public:
 	/**
 	 * \fn	FSPack FreesoundClient::getPack(String id);
 	 *
-	 * \brief	Gets a pack
+	 * \brief	This resource allows the retrieval of a list of packs created by a particular Freesound user.
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	id	The identifier.
+	 * \param	id	The username of the user.
 	 *
-	 * \returns	The pack.
+	 * \returns	A FSList with the user packs.
 	 */
 
 	FSPack getPack(String id);
@@ -1010,20 +1066,20 @@ public:
 	/**
 	 * \fn	SoundList FreesoundClient::getPackSounds(String id, String descriptorsFilter = String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
 	 *
-	 * \brief	Gets pack sounds
+	 * \brief	This resource allows the retrieval of information about a pack.
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	id				 	The identifier.
-	 * \param	descriptorsFilter	(Optional) A filter specifying the descriptors.
-	 * \param	page			 	(Optional) The page.
-	 * \param	pageSize		 	(Optional) Size of the page.
-	 * \param	fields			 	(Optional) The fields.
-	 * \param	descriptors		 	(Optional) The descriptors.
-	 * \param	normalized		 	(Optional) The normalized.
+	 * \param	id				 	The identifier of the pack.
+	 * \param	descriptorsFilter	(Optional) This parameter allows filtering query results by values of the content-based descriptors.
+	 * \param	page			 	(Optional) Query results are paginated, this parameter indicates what page should be returned.
+	 * \param	pageSize		 	(Optional) Indicates the number of sounds per page to include in the result.
+	 * \param	fields			 	(Optional) Indicates which sound properties should be included in every sound of the response.
+	 * \param	descriptors		 	(Optional) Indicates which sound content-based descriptors should be included in every sound of the response.
+	 * \param	normalized		 	(Optional) Indicates whether the returned sound content-based descriptors should be normalized or not.
 	 *
-	 * \returns	The pack sounds.
+	 * \returns	A FSPack instance of the desired pack
 	 */
 
 	SoundList getPackSounds(String id, String descriptorsFilter = String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
@@ -1031,16 +1087,16 @@ public:
 	/**
 	 * \fn	URL::DownloadTask* FreesoundClient::downloadPack(FSPack pack, const File &location, URL::DownloadTask::Listener * listener = nullptr);
 	 *
-	 * \brief	Downloads the pack
+	 * \brief	This resource allows you to download all the sounds of a pack in a single zip file.
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param 		  	pack		The pack.
-	 * \param 		  	location	The location.
-	 * \param [in,out]	listener	(Optional) If non-null, the listener.
+	 * \param 		  	pack		The desored pack.
+	 * \param 		  	location	The location fpr the download.
+	 * \param [in,out]	listener	(Optional) If non-null, the download task listener.
 	 *
-	 * \returns	Null if it fails, else a pointer to an URL::DownloadTask.
+	 * \returns	Null if it fails, else a pointer to the URL::DownloadTask.
 	 */
 
 	URL::DownloadTask* downloadPack(FSPack pack, const File &location, URL::DownloadTask::Listener * listener = nullptr);
@@ -1048,12 +1104,12 @@ public:
 	/**
 	 * \fn	FSUser FreesoundClient::getMe();
 	 *
-	 * \brief	Gets me
+	 * \brief	Returnes a FSUser instance of the authenticated user
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \returns	me.
+	 * \returns	FSUser instance of the authenticated user.
 	 */
 
 	FSUser getMe();
@@ -1061,12 +1117,12 @@ public:
 	/**
 	 * \fn	bool FreesoundClient::isTokenNotEmpty();
 	 *
-	 * \brief	Queries if the token not is empty
+	 * \brief	Queries if the token is not empty
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \returns	True if the token not is empty, false if not.
+	 * \returns	False if the token is empty, True if not.
 	 */
 
 	bool isTokenNotEmpty();
@@ -1074,12 +1130,12 @@ public:
 	/**
 	 * \fn	String FreesoundClient::getToken();
 	 *
-	 * \brief	Gets the token
+	 * \brief	Gets the authentication token
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \returns	The token.
+	 * \returns	The authentication token.
 	 */
 
 	String getToken();
@@ -1087,12 +1143,12 @@ public:
 	/**
 	 * \fn	String FreesoundClient::getHeader();
 	 *
-	 * \brief	Gets the header
+	 * \brief	Gets the authentication header
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \returns	The header.
+	 * \returns	The authentication header.
 	 */
 
 	String getHeader();
@@ -1116,7 +1172,7 @@ public:
 /**
  * \class	FreesoundClientComponent
  *
- * \brief	A freesound client component.
+ * \brief	A freesound client component for use in GUI.
  *
  * \author	Antonio
  * \date	09/07/2019
@@ -1131,12 +1187,12 @@ public:
 	/**
 	 * \fn	void FreesoundClientComponent::startAuthentication(int mode = 0);
 	 *
-	 * \brief	Starts an authentication
+	 * \brief	Starts the authentication
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	mode	(Optional) The mode.
+	 * \param	mode	(Optional) The mode, 0 for logout and authorize, 1 for authorize only.
 	 */
 
 	void startAuthentication(int mode = 0);
@@ -1144,13 +1200,13 @@ public:
 	/**
 	 * \fn	void FreesoundClientComponent::pageFinishedLoading(const String & url, Callback authCallback = [] {});
 	 *
-	 * \brief	Page finished loading
+	 * \brief	Called when the authentication page finished loading
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	url				URL of the resource.
-	 * \param	authCallback	(Optional) The authentication callback.
+	 * \param	url				URL of the page.
+	 * \param	authCallback	(Optional) The authentication finished callback.
 	 */
 
 	void pageFinishedLoading(const String & url, Callback authCallback = [] {});
@@ -1158,7 +1214,7 @@ public:
 	/**
 	 * \fn	void FreesoundClientComponent::pageLoadHadNetworkError();
 	 *
-	 * \brief	Page load had network error
+	 * \brief	Called when loading the page didn't go as expected
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
@@ -1171,7 +1227,7 @@ public:
 /**
  * \class	FSRequest
  *
- * \brief	A file system request.
+ * \brief	A class which represents a request to Freesound.
  *
  * \author	Antonio
  * \date	09/07/2019
@@ -1183,13 +1239,13 @@ public:
 	/**
 	 * \fn	FSRequest::FSRequest(URL uriToRequest, FreesoundClient clientToUse)
 	 *
-	 * \brief	Constructor
+	 * \brief	The constructor for a request
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	uriToRequest	The URI to request.
-	 * \param	clientToUse 	The client to use.
+	 * \param	uriToRequest	The URL for the request.
+	 * \param	clientToUse 	The FSClient to use.
 	 */
 
 	FSRequest(URL uriToRequest, FreesoundClient clientToUse)
@@ -1200,60 +1256,24 @@ public:
 	/**
 	 * \fn	Response FSRequest::request(StringPairArray params = StringPairArray(), String data = String(), bool postLikeRequest = true);
 	 *
-	 * \brief	Requests
+	 * \brief	Make a request to FreesoundAPI
 	 *
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	params		   	(Optional) Options for controlling the operation.
-	 * \param	data		   	(Optional) The data.
-	 * \param	postLikeRequest	(Optional) True to post like request.
+	 * \param	params		   	(Optional) The parameters for the request.
+	 * \param	data		   	(Optional) The data if any.
+	 * \param	postLikeRequest	(Optional) If a POST like request is desired.
 	 *
-	 * \returns	A Response.
+	 * \returns The response for the request.
 	 */
 
 	Response request(StringPairArray params = StringPairArray(), String data = String(), bool postLikeRequest = true);
 
 private:
-	/** \brief	URI of the resource */
+	/** \brief	The URI of the rrequest */
 	URL uri;
-	/** \brief	The client */
+	/** \brief	The client used*/
 	FreesoundClient& client;
-};
-
-/**
- * \class	FreesoundObject
- *
- * \brief	A freesound object.
- *
- * \author	Antonio
- * \date	09/07/2019
- */
-
-class FreesoundObject {
-public:
-
-	/**
-	 * \fn	FreesoundObject::FreesoundObject(var inJsonDict, FreesoundClient& inClient)
-	 *
-	 * \brief	Constructor
-	 *
-	 * \author	Antonio
-	 * \date	09/07/2019
-	 *
-	 * \param 		  	inJsonDict	Dictionary of in jsons.
-	 * \param [in,out]	inClient  	The in client.
-	 */
-
-	FreesoundObject(var inJsonDict, FreesoundClient& inClient)
-		:client(inClient),
-		jsonDict(inJsonDict)
-	{}
-private:
-	/** \brief	The client */
-	/** \brief	The client */
-	FreesoundClient& client;
-	var jsonDict;
-
 };
 
