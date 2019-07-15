@@ -165,6 +165,9 @@ int testExamples(String id, String secret, bool auth) {
 	FSList bookmarkCategories = client.getUserBookmarkCategories(userBookmark.username);
 	std::cout << JSON::toString(bookmarkCategories.getResults());
 
+
+	delete download;
+
 	return 1;
 
 
