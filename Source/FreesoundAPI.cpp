@@ -344,10 +344,9 @@ SoundList FreesoundClient::getSimilarSounds(String id, String descriptorsFilter,
 URL::DownloadTask* FreesoundClient::downloadSound(FSSound sound, const File & location, URL::DownloadTask::Listener * listener)
 {
 	URL address = sound.getDownload();
-	URL::DownloadTask * download;
-	download = address.downloadToFile(location, "Authorization: " + header, listener);
-	std::cout << download->isFinished();
-	return download;
+	
+
+	return address.downloadToFile(location, "Authorization: " + header, listener);
 }
 
 int FreesoundClient::uploadSound(const File & fileToUpload, String tags, String description, String name, String license, String pack, String geotag, Callback cb)

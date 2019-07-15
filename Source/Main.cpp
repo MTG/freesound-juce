@@ -88,7 +88,7 @@ int testExamples(String id, String secret, bool auth) {
 	
 	// Search Example
 	std::cout << "Searching for 'violoncello':" << std::endl;
-	SoundList textSearch = client.textSearch("violoncello", "tag:tenuto duration:[1.0 TO 15.0]", "rating_desc", 0, -1, -1, "id,name,previews,username,download");
+	SoundList textSearch = client.textSearch("violoncello", "tag:tenuto duration:[1.0 TO 15.0]", "rating_desc", 0, -1, -1, "id,name,previews,username,download,type");
 	std::cout << "Num results." << textSearch.getCount() << std::endl;
 	std::cout << "Page1: " << std::endl;
 	Array<FSSound> arrayOfSearch = textSearch.toArrayOfSounds();
@@ -108,8 +108,8 @@ int testExamples(String id, String secret, bool auth) {
 	}
 
 	//Sound download example
-	client.downloadSound(arrayOfSearch[1], File::getSpecialLocation(File::userDesktopDirectory));
-
+	URL::DownloadTask* download;
+	download = client.downloadSound(arrayOfSearch[1], File::getSpecialLocation(File::userDesktopDirectory).getChildFile(arrayOfSearch[1].id).withFileExtension(arrayOfSearch[1].format));
 	//Content based search example
 	std::cout << "Content Based Search" << std::endl;
 	SoundList contentSearch = client.contentSearch("lowlevel.pitch_salience.mean:1.0 lowlevel.pitch.mean:440", "lowlevel.pitch.var:[* TO 20]");
@@ -177,8 +177,8 @@ int main (int argc, char* argv[])
 	argv;
     // ..your code goes here!
 
-	String secret = "";
-	String id = "";
+	String secret = "xlMDWbwEp65jNneniFiwNe3u7aKyxBPKrxug05KC";
+	String id = "qtRxJcdBeEqAPPymT71w";
 
 	//testAuthBrowser(id, secret);
 	testExamples(id,secret,true);
