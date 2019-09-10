@@ -1,21 +1,25 @@
 # freesound-juce
 
-A JUCE client for the Freesound API, built on JUCE v5.4.3.
+A JUCE client for accessing the [Freesound](https://freesound.org) API. From the Freesound API docs:
 
-Find the API documentation at http://www.freesound.org/docs/api/.
+> With the Freesound API you can browse, search, and retrieve information about Freesound users, packs, and the sounds themselves of course. You can find similar sounds to a given target (based on content analysis) and retrieve automatically extracted features from audio files, as well as perform advanced queries combining content analysis features and other metadata (tags, etc…). With the Freesound API, you can also upload, comment, rate and bookmark sounds!
 
-Apply for an API key at http://www.freesound.org/api/apply/.
+The freesound-juce client automatically maps function arguments to HTTP parameters of the Freesound API. JSON results are parsed and converted to C++ objects. The main object classes (`SoundList`, `Sound`,
+`User`, `Pack`) implement utility methods to further interact with the API.
 
-The client automatically maps function arguments to http parameters of the API.
-JSON results are converted to JUCE objects. The main object types (Sound,
-User, Pack) are augmented with the corresponding API calls.
+The freesound-juce client includes a simple example command line application built with JUCE v5.4.4 which shows how to use it. Client's [documentation can be found here](). However we recommend you to check the [official Freesound API documentation]((https://freesound.org/docs/api/)) to get more information about the available API endpoints and features.
 
-An extensive example on how to use this library can be seen in the [main file](https://github.com/aframires/freesound-juce/blob/master/Source/Main.cpp).
 
-**Example usage:**
+## Usage
+
+To use freesound-juce just copy `FreesoundAPI.h` and `FreesoundAPI.cpp` to your project source folder and `#include "FreesoundAPI.h"`.
+
+To access the API you'll need to create a Freesound user account and apply for an API key at [https://freesound.org/api/apply/](https://freesound.org/api/apply/).
+
+
+## Quick example
 
 ```cpp
-
 FreesoundClient client(secret);
 SoundList list = client.textSearch("bass");
 Array<FSSound> arrayOfSearch = list.toArrayOfSounds();
@@ -26,9 +30,11 @@ for (int i = 0; i < arrayOfSearch.size(); i++) {
 }
 
 ```
-**Instalation:**
-To install this library download the files and add them to your project in the Projucer:
 
-* `FreesoundAPI.h`
-* `FreesoundAPI.cpp`
 
+## Example applications
+
+Check out this cool exmaple apps:
+
+ * [Demo app](https://github.com/aframires/freesound-juce/blob/master/Source/Main.cpp): simple command-line utility that makes some queries to Freesound to demonstrate how the client works. Includes OAuth2 authentication example as well.
+ * [FreesoundUploader](): let's you upload sounds to Freesound directly from your DAW!
