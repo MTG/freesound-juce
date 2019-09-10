@@ -1,0 +1,777 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+		B4C17C8E875EFFD4524892A0 = {
+			isa = PBXBuildFile;
+			fileRef = 0BD421401FDF5F5EC3C844C8;
+		};
+		DC01938D7D1971199A22399C = {
+			isa = PBXBuildFile;
+			fileRef = 3B2A89D26F9DEE4272643939;
+		};
+		C1DAD1C3C0AF5341C4A87344 = {
+			isa = PBXBuildFile;
+			fileRef = 37C79B9F7542F0E5968528F0;
+		};
+		68C7887B4D8D23F983A4B361 = {
+			isa = PBXBuildFile;
+			fileRef = 4B7A66D1BB884D4C1A4F4FA1;
+		};
+		414B78B05E6AC8586F6BDEC1 = {
+			isa = PBXBuildFile;
+			fileRef = 5704B94443B1F4E638D2B7CC;
+		};
+		8EFCEFEBBA34A0E52612EC90 = {
+			isa = PBXBuildFile;
+			fileRef = 4F828C35FA99FBDFDDDBCB15;
+		};
+		E3F9B5D3CB920A9A74F40935 = {
+			isa = PBXBuildFile;
+			fileRef = B2AF8FE21D892FB2D49654F7;
+		};
+		F58510186DB1DD5056953F67 = {
+			isa = PBXBuildFile;
+			fileRef = F05B66A1E4402716DA4D8837;
+		};
+		80973076709D3B5EDF0E3549 = {
+			isa = PBXBuildFile;
+			fileRef = FC82BE8DFDFB04E6A92172F2;
+		};
+		17221521B066699C05C6E4C4 = {
+			isa = PBXBuildFile;
+			fileRef = 38DEA5D3593F0E47001AEF32;
+		};
+		15149745C309CCC34E15248B = {
+			isa = PBXBuildFile;
+			fileRef = AF7EA341BFD761B9D78DF8A8;
+		};
+		227DCC25A95ED13FBB56B21C = {
+			isa = PBXBuildFile;
+			fileRef = 48598D6E9B2FB6CD67BAC41E;
+		};
+		3E0085DFE35CB503E4E16758 = {
+			isa = PBXBuildFile;
+			fileRef = F365BC416039AE86CFAEAD62;
+		};
+		C98580BA225484D2A9574EA7 = {
+			isa = PBXBuildFile;
+			fileRef = D51C297D2CDF2B79EF3E2FCA;
+		};
+		E76BBD8AEB115CB1DFCF29A7 = {
+			isa = PBXBuildFile;
+			fileRef = 4F29077B943DB3151824B977;
+		};
+		0E5885AF1CE8BC934CCD4EEC = {
+			isa = PBXBuildFile;
+			fileRef = 6B5C243BF8835DA8C2D48083;
+		};
+		0C94E8D0606F2FA6C5666138 = {
+			isa = PBXBuildFile;
+			fileRef = E23B951BEEB03F9A8526D382;
+		};
+		F33A650BC0998F20B96EADDB = {
+			isa = PBXBuildFile;
+			fileRef = DBB8E1541AADBCC58B67BA8C;
+		};
+		0248D6E51F732EECD2DD60AB = {
+			isa = PBXBuildFile;
+			fileRef = 3B48C2E2525ABB9AE95B8977;
+		};
+		FAEDE324919ADF4AFC2260BB = {
+			isa = PBXBuildFile;
+			fileRef = D1B5ACBC2BA7851EE1B12F47;
+		};
+		80BBEC11E70EA4B0FA008FFA = {
+			isa = PBXBuildFile;
+			fileRef = B4651AA4CE0EA58111762C96;
+		};
+		74D1C1EBEAC7CD3C3AF3ACF8 = {
+			isa = PBXBuildFile;
+			fileRef = F91E9A964831EDBAD3484773;
+		};
+		7A356E4881B5ED8F2DBE1C6A = {
+			isa = PBXBuildFile;
+			fileRef = F7939FD1E07FA73DFA545AD8;
+		};
+		C1FD461725BD43B7F94EECF3 = {
+			isa = PBXBuildFile;
+			fileRef = 1DCB1CA7AFD5260D534D9267;
+		};
+		5A99C57D08CC98E54DF09CE1 = {
+			isa = PBXBuildFile;
+			fileRef = EEFA32246532C64BB18BF4FD;
+		};
+		034B7CBE6BCB45BA8CB08025 = {
+			isa = PBXBuildFile;
+			fileRef = E6163D4692974A58AEF88E84;
+		};
+		589B70AFE43D66C9C99B972B = {
+			isa = PBXBuildFile;
+			fileRef = 915A9C98D87E4EA0538E4478;
+		};
+		0BD421401FDF5F5EC3C844C8 = {
+			isa = PBXFileReference;
+			explicitFileType = "compiled.mach-o.executable";
+			includeInIndex = 0;
+			path = "FreesoundAPI-Demo";
+			sourceTree = "BUILT_PRODUCTS_DIR";
+		};
+		1DCB1CA7AFD5260D534D9267 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_graphics.mm";
+			path = "../../JuceLibraryCode/include_juce_graphics.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		1ED298EB62EFE6AB356E44ED = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = JuceHeader.h;
+			path = ../../JuceLibraryCode/JuceHeader.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		37C79B9F7542F0E5968528F0 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = AudioToolbox.framework;
+			path = System/Library/Frameworks/AudioToolbox.framework;
+			sourceTree = SDKROOT;
+		};
+		3830523009D54273CAFF3EE8 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_data_structures";
+			path = "/Users/ffont/Developer/JUCE/modules/juce_data_structures";
+			sourceTree = "<absolute>";
+		};
+		38DEA5D3593F0E47001AEF32 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = QuartzCore.framework;
+			path = System/Library/Frameworks/QuartzCore.framework;
+			sourceTree = SDKROOT;
+		};
+		39996611A66171339C5E7D84 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_gui_basics";
+			path = "/Users/ffont/Developer/JUCE/modules/juce_gui_basics";
+			sourceTree = "<absolute>";
+		};
+		3B2A89D26F9DEE4272643939 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = Accelerate.framework;
+			path = System/Library/Frameworks/Accelerate.framework;
+			sourceTree = SDKROOT;
+		};
+		3B48C2E2525ABB9AE95B8977 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_audio_processors.mm";
+			path = "../../JuceLibraryCode/include_juce_audio_processors.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		42D9E9610EA769E5C3C45D83 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_events";
+			path = "/Users/ffont/Developer/JUCE/modules/juce_events";
+			sourceTree = "<absolute>";
+		};
+		48598D6E9B2FB6CD67BAC41E = {
+			isa = PBXFileReference;
+			lastKnownFileType = file.nib;
+			name = RecentFilesMenuTemplate.nib;
+			path = RecentFilesMenuTemplate.nib;
+			sourceTree = "SOURCE_ROOT";
+		};
+		4B7A66D1BB884D4C1A4F4FA1 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = Carbon.framework;
+			path = System/Library/Frameworks/Carbon.framework;
+			sourceTree = SDKROOT;
+		};
+		4C0841399AA61C7D6034A47C = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_audio_formats";
+			path = "/Users/ffont/Developer/JUCE/modules/juce_audio_formats";
+			sourceTree = "<absolute>";
+		};
+		4F29077B943DB3151824B977 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = Main.cpp;
+			path = ../../Source/Main.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		4F828C35FA99FBDFDDDBCB15 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = CoreAudio.framework;
+			path = System/Library/Frameworks/CoreAudio.framework;
+			sourceTree = SDKROOT;
+		};
+		5704B94443B1F4E638D2B7CC = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = Cocoa.framework;
+			path = System/Library/Frameworks/Cocoa.framework;
+			sourceTree = SDKROOT;
+		};
+		5F73FBC2E76A0E6717B7B014 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_core";
+			path = "/Users/ffont/Developer/JUCE/modules/juce_core";
+			sourceTree = "<absolute>";
+		};
+		6B5C243BF8835DA8C2D48083 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_audio_basics.mm";
+			path = "../../JuceLibraryCode/include_juce_audio_basics.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		6FF974D7D8213AC9D51A4D78 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_graphics";
+			path = "/Users/ffont/Developer/JUCE/modules/juce_graphics";
+			sourceTree = "<absolute>";
+		};
+		7B070A9F2ACE0151AC2D44F7 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_audio_processors";
+			path = "/Users/ffont/Developer/JUCE/modules/juce_audio_processors";
+			sourceTree = "<absolute>";
+		};
+		88B44E1248E424894D068309 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_opengl";
+			path = "/Users/ffont/Developer/JUCE/modules/juce_opengl";
+			sourceTree = "<absolute>";
+		};
+		88D0942AB72C217BFFB0136A = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_audio_devices";
+			path = "/Users/ffont/Developer/JUCE/modules/juce_audio_devices";
+			sourceTree = "<absolute>";
+		};
+		915A9C98D87E4EA0538E4478 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_opengl.mm";
+			path = "../../JuceLibraryCode/include_juce_opengl.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		92914CC313596FCDA280CBBE = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_cryptography";
+			path = "/Users/ffont/Developer/JUCE/modules/juce_cryptography";
+			sourceTree = "<absolute>";
+		};
+		AA2D92AD30EA8259EE03DFF4 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = AppConfig.h;
+			path = ../../JuceLibraryCode/AppConfig.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		AF7EA341BFD761B9D78DF8A8 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = WebKit.framework;
+			path = System/Library/Frameworks/WebKit.framework;
+			sourceTree = SDKROOT;
+		};
+		B2AF8FE21D892FB2D49654F7 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = CoreMIDI.framework;
+			path = System/Library/Frameworks/CoreMIDI.framework;
+			sourceTree = SDKROOT;
+		};
+		B4651AA4CE0EA58111762C96 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_cryptography.mm";
+			path = "../../JuceLibraryCode/include_juce_cryptography.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		BA1136887AA0E8CB5CC303B7 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_gui_extra";
+			path = "/Users/ffont/Developer/JUCE/modules/juce_gui_extra";
+			sourceTree = "<absolute>";
+		};
+		D1B5ACBC2BA7851EE1B12F47 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_core.mm";
+			path = "../../JuceLibraryCode/include_juce_core.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		D51C297D2CDF2B79EF3E2FCA = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.cpp;
+			name = FreesoundAPI.cpp;
+			path = ../../Source/FreesoundAPI.cpp;
+			sourceTree = "SOURCE_ROOT";
+		};
+		DBB8E1541AADBCC58B67BA8C = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_audio_formats.mm";
+			path = "../../JuceLibraryCode/include_juce_audio_formats.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		E23B951BEEB03F9A8526D382 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_audio_devices.mm";
+			path = "../../JuceLibraryCode/include_juce_audio_devices.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		E6163D4692974A58AEF88E84 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_gui_extra.mm";
+			path = "../../JuceLibraryCode/include_juce_gui_extra.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		EEFA32246532C64BB18BF4FD = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_gui_basics.mm";
+			path = "../../JuceLibraryCode/include_juce_gui_basics.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		EFD5F8F54D6B269912567568 = {
+			isa = PBXFileReference;
+			lastKnownFileType = file;
+			name = "juce_audio_basics";
+			path = "/Users/ffont/Developer/JUCE/modules/juce_audio_basics";
+			sourceTree = "<absolute>";
+		};
+		F05B66A1E4402716DA4D8837 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = IOKit.framework;
+			path = System/Library/Frameworks/IOKit.framework;
+			sourceTree = SDKROOT;
+		};
+		F365BC416039AE86CFAEAD62 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.c.h;
+			name = FreesoundAPI.h;
+			path = ../../Source/FreesoundAPI.h;
+			sourceTree = "SOURCE_ROOT";
+		};
+		F7939FD1E07FA73DFA545AD8 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_events.mm";
+			path = "../../JuceLibraryCode/include_juce_events.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		F91E9A964831EDBAD3484773 = {
+			isa = PBXFileReference;
+			lastKnownFileType = sourcecode.cpp.objcpp;
+			name = "include_juce_data_structures.mm";
+			path = "../../JuceLibraryCode/include_juce_data_structures.mm";
+			sourceTree = "SOURCE_ROOT";
+		};
+		FC82BE8DFDFB04E6A92172F2 = {
+			isa = PBXFileReference;
+			lastKnownFileType = wrapper.framework;
+			name = OpenGL.framework;
+			path = System/Library/Frameworks/OpenGL.framework;
+			sourceTree = SDKROOT;
+		};
+		057AA34F2DF4C835AF423035 = {
+			isa = PBXGroup;
+			children = (
+				F365BC416039AE86CFAEAD62,
+				D51C297D2CDF2B79EF3E2FCA,
+				4F29077B943DB3151824B977,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		BCC81926E1CA9FE7D916E924 = {
+			isa = PBXGroup;
+			children = (
+				057AA34F2DF4C835AF423035,
+			);
+			name = "FreesoundAPI-Demo";
+			sourceTree = "<group>";
+		};
+		0413F133314EBC03549A8558 = {
+			isa = PBXGroup;
+			children = (
+				EFD5F8F54D6B269912567568,
+				88D0942AB72C217BFFB0136A,
+				4C0841399AA61C7D6034A47C,
+				7B070A9F2ACE0151AC2D44F7,
+				5F73FBC2E76A0E6717B7B014,
+				92914CC313596FCDA280CBBE,
+				3830523009D54273CAFF3EE8,
+				42D9E9610EA769E5C3C45D83,
+				6FF974D7D8213AC9D51A4D78,
+				39996611A66171339C5E7D84,
+				BA1136887AA0E8CB5CC303B7,
+				88B44E1248E424894D068309,
+			);
+			name = "JUCE Modules";
+			sourceTree = "<group>";
+		};
+		E2EBE41964A9323260BED353 = {
+			isa = PBXGroup;
+			children = (
+				AA2D92AD30EA8259EE03DFF4,
+				6B5C243BF8835DA8C2D48083,
+				E23B951BEEB03F9A8526D382,
+				DBB8E1541AADBCC58B67BA8C,
+				3B48C2E2525ABB9AE95B8977,
+				D1B5ACBC2BA7851EE1B12F47,
+				B4651AA4CE0EA58111762C96,
+				F91E9A964831EDBAD3484773,
+				F7939FD1E07FA73DFA545AD8,
+				1DCB1CA7AFD5260D534D9267,
+				EEFA32246532C64BB18BF4FD,
+				E6163D4692974A58AEF88E84,
+				915A9C98D87E4EA0538E4478,
+				1ED298EB62EFE6AB356E44ED,
+			);
+			name = "JUCE Library Code";
+			sourceTree = "<group>";
+		};
+		8AC069EDFAAAD51FD92F4DBE = {
+			isa = PBXGroup;
+			children = (
+				48598D6E9B2FB6CD67BAC41E,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		86DECA23296FF452BD829AED = {
+			isa = PBXGroup;
+			children = (
+				3B2A89D26F9DEE4272643939,
+				37C79B9F7542F0E5968528F0,
+				4B7A66D1BB884D4C1A4F4FA1,
+				5704B94443B1F4E638D2B7CC,
+				4F828C35FA99FBDFDDDBCB15,
+				B2AF8FE21D892FB2D49654F7,
+				F05B66A1E4402716DA4D8837,
+				FC82BE8DFDFB04E6A92172F2,
+				38DEA5D3593F0E47001AEF32,
+				AF7EA341BFD761B9D78DF8A8,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CE65E630D3C2680C77638171 = {
+			isa = PBXGroup;
+			children = (
+				0BD421401FDF5F5EC3C844C8,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2B5E479090CED6D9CC96FEFF = {
+			isa = PBXGroup;
+			children = (
+				BCC81926E1CA9FE7D916E924,
+				0413F133314EBC03549A8558,
+				E2EBE41964A9323260BED353,
+				8AC069EDFAAAD51FD92F4DBE,
+				86DECA23296FF452BD829AED,
+				CE65E630D3C2680C77638171,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		B62856901645BD688DB14436 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"_DEBUG=1",
+					"DEBUG=1",
+					"JUCER_XCODE_MAC_F6D2F4CF=1",
+					"JUCE_APP_VERSION=1.0.0",
+					"JUCE_APP_VERSION_HEX=0x10000",
+					"JucePlugin_Build_VST=0",
+					"JucePlugin_Build_VST3=0",
+					"JucePlugin_Build_AU=0",
+					"JucePlugin_Build_AUv3=0",
+					"JucePlugin_Build_RTAS=0",
+					"JucePlugin_Build_AAX=0",
+					"JucePlugin_Build_Standalone=0",
+					"JucePlugin_Build_Unity=0",
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					"../../JuceLibraryCode",
+					"/Users/ffont/Developer/JUCE/modules",
+					"$(inherited)",
+				);
+				INSTALL_PATH = "/usr/bin";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MusicTechnologyGroup.FreesoundAPIDemo;
+				PRODUCT_NAME = "FreesoundAPI-Demo";
+				USE_HEADERMAP = NO;
+			};
+			name = Debug;
+		};
+		91875FDFDA650F7F626A11D4 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
+				DEAD_CODE_STRIPPING = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"_NDEBUG=1",
+					"NDEBUG=1",
+					"JUCER_XCODE_MAC_F6D2F4CF=1",
+					"JUCE_APP_VERSION=1.0.0",
+					"JUCE_APP_VERSION_HEX=0x10000",
+					"JucePlugin_Build_VST=0",
+					"JucePlugin_Build_VST3=0",
+					"JucePlugin_Build_AU=0",
+					"JucePlugin_Build_AUv3=0",
+					"JucePlugin_Build_RTAS=0",
+					"JucePlugin_Build_AAX=0",
+					"JucePlugin_Build_Standalone=0",
+					"JucePlugin_Build_Unity=0",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					"../../JuceLibraryCode",
+					"/Users/ffont/Developer/JUCE/modules",
+					"$(inherited)",
+				);
+				INSTALL_PATH = "/usr/bin";
+				LLVM_LTO = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = com.MusicTechnologyGroup.FreesoundAPIDemo;
+				PRODUCT_NAME = "FreesoundAPI-Demo";
+				USE_HEADERMAP = NO;
+			};
+			name = Release;
+		};
+		FAB4FC9219433884D258C743 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "FreesoundAPI-Demo";
+				WARNING_CFLAGS = "-Wreorder";
+				ZERO_LINK = NO;
+			};
+			name = Debug;
+		};
+		58E2CC744EAA156A641582C6 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_TYPECHECK_CALLS_TO_PRINTF = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PRODUCT_NAME = "FreesoundAPI-Demo";
+				WARNING_CFLAGS = "-Wreorder";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		E3AA276B37E258B07EBD5D26 = {
+			isa = PBXTargetDependency;
+			target = 42DE6280ABD34F3F9044957D;
+		};
+		CA0C3A4F773CE9047F0F5EE2 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FAB4FC9219433884D258C743,
+				58E2CC744EAA156A641582C6,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F090426A2B9BA305F943E9B7 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B62856901645BD688DB14436,
+				91875FDFDA650F7F626A11D4,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6E0CFFD989531FC2111192C8 = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				227DCC25A95ED13FBB56B21C,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D9EF76ED02AE9C627F4A1A13 = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3E0085DFE35CB503E4E16758,
+				C98580BA225484D2A9574EA7,
+				E76BBD8AEB115CB1DFCF29A7,
+				0E5885AF1CE8BC934CCD4EEC,
+				0C94E8D0606F2FA6C5666138,
+				F33A650BC0998F20B96EADDB,
+				0248D6E51F732EECD2DD60AB,
+				FAEDE324919ADF4AFC2260BB,
+				80BBEC11E70EA4B0FA008FFA,
+				74D1C1EBEAC7CD3C3AF3ACF8,
+				7A356E4881B5ED8F2DBE1C6A,
+				C1FD461725BD43B7F94EECF3,
+				5A99C57D08CC98E54DF09CE1,
+				034B7CBE6BCB45BA8CB08025,
+				589B70AFE43D66C9C99B972B,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EA6F0F1815B407198697BA49 = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC01938D7D1971199A22399C,
+				C1DAD1C3C0AF5341C4A87344,
+				68C7887B4D8D23F983A4B361,
+				414B78B05E6AC8586F6BDEC1,
+				8EFCEFEBBA34A0E52612EC90,
+				E3F9B5D3CB920A9A74F40935,
+				F58510186DB1DD5056953F67,
+				80973076709D3B5EDF0E3549,
+				17221521B066699C05C6E4C4,
+				15149745C309CCC34E15248B,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		42DE6280ABD34F3F9044957D = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F090426A2B9BA305F943E9B7;
+			buildPhases = (
+				6E0CFFD989531FC2111192C8,
+				D9EF76ED02AE9C627F4A1A13,
+				EA6F0F1815B407198697BA49,
+			);
+			buildRules = ( );
+			dependencies = ( );
+			name = "FreesoundAPI-Demo - ConsoleApp";
+			productName = "FreesoundAPI-Demo";
+			productReference = 0BD421401FDF5F5EC3C844C8;
+			productType = "com.apple.product-type.tool";
+		};
+		DA2C1F5605175FDDA65F97CE = {
+			isa = PBXProject;
+			buildConfigurationList = CA0C3A4F773CE9047F0F5EE2;
+			attributes = { LastUpgradeCheck = 1100; ORGANIZATIONNAME = "Music Technology Group"; };
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 0;
+			mainGroup = 2B5E479090CED6D9CC96FEFF;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (42DE6280ABD34F3F9044957D);
+			knownRegions = (en, Base);
+		};
+	};
+	rootObject = DA2C1F5605175FDDA65F97CE;
+}
