@@ -344,9 +344,13 @@ SoundList FreesoundClient::getSimilarSounds(String id, String descriptorsFilter,
 URL::DownloadTask* FreesoundClient::downloadSound(FSSound sound, const File & location, URL::DownloadTask::Listener * listener)
 {
 	URL address = sound.getDownload();
-	
-
 	return address.downloadToFile(location, "Authorization: " + header, listener);
+}
+
+URL::DownloadTask* FreesoundClient::downloadOGGSoundPreview(FSSound sound, const File & location, URL::DownloadTask::Listener * listener)
+{
+    URL address = sound.getOGGPreviewURL();
+    return address.downloadToFile(location, "", listener);
 }
 
 int FreesoundClient::uploadSound(const File & fileToUpload, String tags, String description, String name, String license, String pack, String geotag, Callback cb)
@@ -842,7 +846,8 @@ FSSound::FSSound(var sound)
 	pack = URL(sound["pack"]);
 	download = URL(sound["download"]);
 	bookmark = URL(sound["bookmark"]);
-	images = sound["previews"];
+	previews = sound["previews"];
+    images = sound["images"];
 	numDownloads = sound["images"];
 	avgRating = sound["num_downloads"];
 	numRatings = sound["avg_rating"];
@@ -862,6 +867,26 @@ URL FSSound::getDownload()
 {
 	return download;
 }
+
+URL FSSound::getOGGPreviewURL()
+{
+    if (!previews.hasProperty("preview-hq-ogg")){
+        /*
+         If you reached this bit of code is because you're trying to download the preview of a sound
+         but the freesound-juce client does not know the URL where to find that preview.
+         
+         It can happen that the FSSound object does not have "previews" property if the object was
+         constructed from the results of a SoundList (e.g. using SoundList::toSoundArray method) and
+         the "previews" field was not initially requested in the query that created the SoundList
+         object. If you just reached this bit of code, make sure that you include the "previews" field
+         in the "fields" parameter of the function that generated the SoundList.
+         */
+        throw;
+    }
+    return URL(previews["preview-hq-ogg"]);
+}
+
+
 
 FSUser::FSUser()
 {
