@@ -7,7 +7,7 @@ A JUCE client for accessing the [Freesound](https://freesound.org) API. From the
 The freesound-juce client automatically maps function arguments to HTTP parameters of the Freesound API. JSON results are parsed and converted to C++ objects. The main object classes (`SoundList`, `Sound`,
 `User`, `Pack`) implement utility methods to further interact with the API.
 
-The freesound-juce client includes a simple example command line application built with JUCE v5.4.4 which shows how to use it. Client's [documentation can be found here](). However we recommend you to check the [official Freesound API documentation]((https://freesound.org/docs/api/)) to get more information about the available API endpoints and features.
+The freesound-juce client includes a simple example command line application built with JUCE v5.4.4 which shows how to use it. Client's [documentation can be found here](https://mtg.github.io/freesound-juce/index.html). However we recommend you to check the [official Freesound API documentation]((https://freesound.org/docs/api/)) to get more information about the available API endpoints and features.
 
 
 ## Usage
