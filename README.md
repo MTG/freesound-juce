@@ -34,7 +34,7 @@ for (int i = 0; i < arrayOfSearch.size(); i++) {
 
 ## Example applications
 
-Check out this cool exmaple apps:
+Check out this cool example apps:
 
  * [Demo app](https://github.com/aframires/freesound-juce/blob/master/Source/Main.cpp): simple command-line utility that makes some queries to Freesound to demonstrate how the client works. Includes OAuth2 authentication example as well.
  * [FreesoundUploader](): let's you upload sounds to Freesound directly from your DAW!
