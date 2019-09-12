@@ -14,7 +14,9 @@ The freesound-juce client includes a simple example command line application bui
 
 To use freesound-juce just copy `FreesoundAPI.h` and `FreesoundAPI.cpp` to your project source folder and `#include "FreesoundAPI.h"`.
 
-To access the API you'll need to create a Freesound user account and apply for an API key at [https://freesound.org/api/apply/](https://freesound.org/api/apply/).
+To access the API you'll need to create a Freesound user account and apply for an API key at [https://freesound.org/api/apply/](https://freesound.org/api/apply/). Then, an `FreesoundClient`
+needs to be instantiated with the api key as a parameter. Note that this client can do both token-based
+authentication or OAuth2 and there are specific functions for them.
 
 
 ## Quick example
