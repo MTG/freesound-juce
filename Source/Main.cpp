@@ -176,12 +176,13 @@ int testExamples(String id, String secret, bool auth) {
 
 int main (int argc, char* argv[])
 {
-	argc;
-	argv;
-    // ..your code goes here!
 
-	String secret = "xlMDWbwEp65jNneniFiwNe3u7aKyxBPKrxug05KC";
-	String id = "qtRxJcdBeEqAPPymT71w";
+	if (argc < 3) {
+		std::cout << "Usage: " << argv[0] << " CLIENT_SECRET CLIENT_ID";
+	}
+
+	String secret = argv[1];
+	String id = argv[2];
 
 	//testAuthBrowser(id, secret);
 	testExamples(id,secret,true);
