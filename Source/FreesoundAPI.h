@@ -513,6 +513,19 @@ public:
 	 */
 
 	URL getDownload();
+    
+    /**
+     * \fn    URL FSSound::getOGGPreviewURL();
+     *
+     * \brief    Gets the sound the URL of the OGG preview of a sound
+     *
+     * \author    Frederic
+     * \date    12/09/2019
+     *
+     * \returns    The OGG preview URL.
+     */
+    
+    URL getOGGPreviewURL();
 };
 
 /**
@@ -843,6 +856,23 @@ public:
 	 */
 
 	URL::DownloadTask* downloadSound(FSSound sound, const File &location, URL::DownloadTask::Listener * listener = nullptr);
+    
+    /**
+     * \fn    URL::DownloadTask* FreesoundClient::downloadOGGSoundPreview(FSSound sound, const File &location, URL::DownloadTask::Listener * listener = nullptr);
+     *
+     * \brief    This resource allows you to download the preview of a sound in OGG format. The advantage of downloading a preview instead of the original file is that the file size is lower and the format is unified.
+     *
+     * \author    Frederic
+     * \date    12/09/2019
+     *
+     * \param               sound       The sound whose preview should be downloaded.
+     * \param               location    The location for the sound to be download.
+     * \param [in,out]    listener    (Optional) If non-null, the listener for the download progress.
+     *
+     * \returns    Null if it fails, else a pointer to an URL::DownloadTask.
+     */
+    
+    URL::DownloadTask* downloadOGGSoundPreview(FSSound sound, const File &location, URL::DownloadTask::Listener * listener = nullptr);
 
 	/**
 	 * \fn	int FreesoundClient::uploadSound(const File &fileToUpload, String tags, String description, String name = String(), String license = "Creative Commons 0", String pack = String(), String geotag = String(), Callback cb = [] {});
