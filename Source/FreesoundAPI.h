@@ -278,9 +278,9 @@ public:
 	URL profile;
 	/** \brief	The username */
 	String username;
-	/** \brief	The ëaboutí text of usersí profile (if indicated)*/
+	/** \brief	The ‚Äòabout‚Äô text of users‚Äô profile (if indicated)*/
 	String about;
-	/** \brief	The URI of usersí homepage outside Freesound (if indicated)*/
+	/** \brief	The URI of users‚Äô homepage outside Freesound (if indicated)*/
 	URL homepage;
 	/** \brief	Dictionary including the URIs for the avatar of the user. 
 				The avatar is presented in three sizes Small, Medium and Large, which 
@@ -299,7 +299,7 @@ public:
 	URL packs;
 	/** \brief	The number of forum posts by the user */
 	int numPosts;
-	/** \brief	The number of comments that user made in other usersí sounds*/
+	/** \brief	The number of comments that user made in other users‚Äô sounds*/
 	int numComments;   
 	/** \brief	The URI for a list of bookmark categories by the user*/
 	URL bookmarks;
@@ -409,7 +409,7 @@ public:
 
 class FSSound {
 public:
-	/** \brief	The soundís unique identifier */
+	/** \brief	The sound‚Äôs unique identifier */
 	String id;
 	/** \brief	The URI for this sound on the Freesound website*/
 	URL url;
@@ -441,7 +441,7 @@ public:
 	int samplerate;
 	/** \brief	The username of the uploader of the sound */
 	String user;
-	/** \brief	If the sound is part of a pack, this URI points to that packís API resource */
+	/** \brief	If the sound is part of a pack, this URI points to that pack‚Äôs API resource */
 	URL pack;
 	/** \brief	The URI for retrieving the original sound */
 	URL download;
@@ -781,7 +781,7 @@ public:
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	id		The soundís unique identifier.
+	 * \param	id		The sound‚Äôs unique identifier.
 	 * \param	fields	(Optional) Indicates which sound properties should be included in every sound of the response.
 	 *
 	 * \returns	A FSSound instance.
@@ -797,7 +797,7 @@ public:
 	 * \author	Antonio
 	 * \date	09/07/2019
 	 *
-	 * \param	id		   	The soundís unique identifier.
+	 * \param	id		   	The sound‚Äôs unique identifier.
 	 * \param	descriptors	(Optional) Indicates which sound content-based descriptors should be included in every sound of the response.
 	 * \param	normalized 	(Optional) Indicates whether the returned sound content-based descriptors should be normalized or not.
 	 *
@@ -853,10 +853,10 @@ public:
 	 * \date	09/07/2019
 	 *
 	 * \param	fileToUpload	The file to upload.
-	 * \param	tags			The tags that will be assigned to the sound. Separate tags with spaces and join multi-words with dashes (e.g. ìtag1 tag2 tag3 cool-tag4î).
+	 * \param	tags			The tags that will be assigned to the sound. Separate tags with spaces and join multi-words with dashes (e.g. ‚Äútag1 tag2 tag3 cool-tag4‚Äù).
 	 * \param	description 	A textual description of the sound.
 	 * \param	name			(Optional) The name that will be given to the sound. If not provided, filename will be used.
-	 * \param	license			(Optional) The license of the sound. Must be either ìAttributionî, ìAttribution Noncommercialî or ìCreative Commons 0î.
+	 * \param	license			(Optional) The license of the sound. Must be either ‚ÄúAttribution‚Äù, ‚ÄúAttribution Noncommercial‚Äù or ‚ÄúCreative Commons 0‚Äù.
 	 * \param	pack			(Optional) The name of the pack where the sound should be included. 
 	 * \param	geotag			(Optional) Geotag information for the sound.
 	 * \param	cb				(Optional) The callback function called in the end of the function.
@@ -876,9 +876,9 @@ public:
 	 *
 	 * \param	uploadFilename	The filename of the sound to describe.
 	 * \param	description   	A textual description of the sound.
-	 * \param	license		  	The license of the sound. Must be either ìAttributionî, ìAttribution Noncommercialî or ìCreative Commons 0î.
+	 * \param	license		  	The license of the sound. Must be either ‚ÄúAttribution‚Äù, ‚ÄúAttribution Noncommercial‚Äù or ‚ÄúCreative Commons 0‚Äù.
 	 * \param	name		  	(Optional) The name that will be given to the sound. If not provided, filename will be used.
-	 * \param	tags		  	(Optional) The tags that will be assigned to the sound. Separate tags with spaces and join multi-words with dashes (e.g. ìtag1 tag2 tag3 cool-tag4î).
+	 * \param	tags		  	(Optional) The tags that will be assigned to the sound. Separate tags with spaces and join multi-words with dashes (e.g. ‚Äútag1 tag2 tag3 cool-tag4‚Äù).
 	 * \param	pack		  	(Optional) The name of the pack where the sound should be included.
 	 * \param	geotag		  	(Optional) Geotag information for the sound.
 	 *
@@ -912,7 +912,7 @@ public:
 	 * \param	name	   	(Optional) The new name that will be given to the sound.
 	 * \param	tags	   	(Optional) The new tags that will be assigned to the sound.
 	 * \param	description	(Optional) The new textual description for the sound.
-	 * \param	license	   	(Optional) The new license of the sound. Must be either ìAttributionî, ìAttribution Noncommercialî or ìCreative Commons 0î.
+	 * \param	license	   	(Optional) The new license of the sound. Must be either ‚ÄúAttribution‚Äù, ‚ÄúAttribution Noncommercial‚Äù or ‚ÄúCreative Commons 0‚Äù.
 	 * \param	pack	   	(Optional) The new name of the pack where the sound should be included. 
 	 * \param	geotag	   	(Optional) The new geotag information for the sound.
 	 * \param	cb		   	(Optional) The callback function called in the end of the function.
@@ -1183,6 +1183,9 @@ private:
 	/** \brief	The authentication code */
 	String authCode;
 public:
+
+	//Inherits the constructor of FreesoundClient
+	using FreesoundClient::FreesoundClient;
 
 	/**
 	 * \fn	void FreesoundClientComponent::startAuthentication(int mode = 0);
