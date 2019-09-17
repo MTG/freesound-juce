@@ -568,7 +568,7 @@ public:
 
 class FreesoundClient{
 	
-private:
+public:
 
 	/**
 	 * \enum	Authorization
@@ -598,8 +598,6 @@ private:
 	/** \brief	The authentication type*/
 	Authorization auth;
 
-
-public:
 
 	/**
 	 * \fn	FreesoundClient::FreesoundClient();
@@ -668,6 +666,8 @@ public:
 	 */
 
 	void exchangeToken(String authCode, Callback cb = [] {});
+
+
 
 	/**
 	 * \fn	void FreesoundClient::refreshAccessToken(Callback cb = [] {});
@@ -1212,6 +1212,7 @@ class FreesoundClientComponent : public FreesoundClient, public WebBrowserCompon
 private:
 	/** \brief	The authentication code */
 	String authCode;
+	Callback finishedLoadingCallback;
 public:
 
 	//Inherits the constructor of FreesoundClient
@@ -1239,10 +1240,9 @@ public:
 	 * \date	09/07/2019
 	 *
 	 * \param	url				URL of the page.
-	 * \param	authCallback	(Optional) The authentication finished callback.
 	 */
 
-	void pageFinishedLoading(const String & url, Callback authCallback = [] {});
+	void pageFinishedLoading(const String & url);
 
 	/**
 	 * \fn	void FreesoundClientComponent::pageLoadHadNetworkError();
@@ -1254,6 +1254,36 @@ public:
 	 */
 
 	void pageLoadHadNetworkError();
+
+	/**
+	 * \fn	void FreesoundClientComponent::exchangeToken(Callback cb = [] {});
+	 *
+	 * \brief	Exchange token is the 3rd step of the authorization proccess, where the
+	 *			authorization code is exchanged for an access token. Here the default
+	 *			authcode is used, stored in the class.
+	 *
+	 * \author	Antonio
+	 * \date	09/07/2019
+	 *
+	 * \param	cb			(Optional) The callback function called in the end of the function.
+	 */
+
+	void exchangeToken(Callback cb = [] {});
+
+
+	/**
+	* \fn	void FreesoundClientComponent::setCallback(Callback cb);
+	*
+	* \brief	Called when loading the page didn't go as expected
+	*
+	* \author	Antonio
+	* \date	13/09/2019
+	*
+	*\param		cb	The callback function which is called when the authentication finishes
+	*/	
+
+	void setCallback(Callback cb);
+
 
 };
 

@@ -100,6 +100,8 @@ void FreesoundClient::exchangeToken(String authCode, Callback cb)
 	cb();
 }
 
+
+
 void FreesoundClient::refreshAccessToken(Callback cb) {
 	StringPairArray params;
 	params.set("client_id", clientID);
@@ -357,26 +359,28 @@ int FreesoundClient::uploadSound(const File & fileToUpload, String tags, String 
 {
 	StringPairArray params;
 
-	params.set("tags", tags);
-	params.set("description", description);
-	params.set("license", license);
+	URL url = URIS::uri(URIS::UPLOAD);
+
+	url = url.withParameter("tags", tags);
+	url = url.withParameter("description", description);
+	url = url.withParameter("license", license);
+	url = url.withParameter("description", description);
 
 	if (name.isNotEmpty()) {
-		params.set("name", name);
+		url = url.withParameter("name", name);
 	}
 
 	if (pack.isNotEmpty()) {
-		params.set("pack", pack);
+		url = url.withParameter("pack", pack);
 	}
 
 	if (geotag.isNotEmpty()) {
-		params.set("geotag", geotag);
+		url = url.withParameter("geotag", geotag);
 	}
 
-	URL url = URIS::uri(URIS::UPLOAD);
 	url = url.withFileToUpload("audiofile", fileToUpload, "audio/*");
 	FSRequest request(url, *this);
-	Response resp = request.request(params, String(), false);
+	Response resp = request.request(StringPairArray(), String(), true);
 	int resultCode = resp.first;
 	if (resultCode == 200) {
 		var response = resp.second;
@@ -384,7 +388,7 @@ int FreesoundClient::uploadSound(const File & fileToUpload, String tags, String 
 		return response["id"];
 	}
 	cb();
-	return 0;
+	return resultCode;
 }
 
 int FreesoundClient::describeSound(String uploadFilename, String description, String license, String name, String tags, String pack, String geotag)
@@ -737,23 +741,52 @@ void FreesoundClientComponent::startAuthentication(int mode)
 
 
 
-void FreesoundClientComponent::pageFinishedLoading(const String &url, Callback authCallback) {
-	if (url.startsWith(URIS::CONFIRMATION)) {
+void FreesoundClientComponent::pageFinishedLoading(const String &url) {
+	std::cout << url << std::endl;
+	if (url.startsWith("https://freesound.org/home/app_permissions/permission_granted/")) {
 		URL recUrl(url);
 		StringArray paramNames = recUrl.getParameterNames();
 		StringArray paramVals = recUrl.getParameterValues();
 
 		int codeInd = paramNames.indexOf("code", true, 0);
 		authCode = paramVals[codeInd];
-		authCallback();
+		if (finishedLoadingCallback != nullptr) {
+			finishedLoadingCallback();
+		}
 
 	}
 
 }
 
+void FreesoundClientComponent::exchangeToken(Callback cb)
+{
+	StringPairArray params;
+	params.set("client_id", clientID);
+	params.set("client_secret", clientSecret);
+	params.set("grant_type", "authorization_code");
+	params.set("code", authCode);
+
+	URL url = URIS::uri(URIS::ACCESS_TOKEN, StringArray());
+	FSRequest request(url, *this);
+	Response resp = request.request(params);
+	int resultCode = resp.first;
+	if (resultCode == 200) {
+		var response = resp.second;
+		accessToken = response["access_token"];
+		refreshToken = response["refresh_token"];
+		header = "Bearer " + accessToken;
+	}
+	cb();
+}
+
 
 void FreesoundClientComponent::pageLoadHadNetworkError() {
 	startAuthentication();
+}
+
+void FreesoundClientComponent::setCallback(Callback cb)
+{
+	finishedLoadingCallback = cb;
 }
 
 
@@ -827,7 +860,6 @@ FSSound::FSSound(var sound)
 	url = URL(sound["url"]);
 	name = sound["name"];
 	tags = StringArray();
-	//Verificar que isto está bem. sound[tags]precisa de ser um array
 	for (int i = 0; i < sound["tags"].size(); i++) {
 		tags.add(sound["tags"][i]);
 	}
