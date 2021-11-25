@@ -108,7 +108,7 @@ int testExamples(String id, String secret, bool auth) {
 	}
 
 	//Sound download example
-	URL::DownloadTask* download;
+	std::unique_ptr<URL::DownloadTask> download;
 	download = client.downloadSound(arrayOfSearch[1], File::getSpecialLocation(File::userDesktopDirectory).getChildFile(arrayOfSearch[1].id).withFileExtension(arrayOfSearch[1].format));
 	//Content based search example
 	std::cout << "Content Based Search" << std::endl;
@@ -165,8 +165,6 @@ int testExamples(String id, String secret, bool auth) {
 	FSList bookmarkCategories = client.getUserBookmarkCategories(userBookmark.username);
 	std::cout << JSON::toString(bookmarkCategories.getResults());
 
-
-	delete download;
 
 	return 1;
 

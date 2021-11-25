@@ -343,13 +343,13 @@ SoundList FreesoundClient::getSimilarSounds(String id, String descriptorsFilter,
 	return SoundList();
 }
 
-URL::DownloadTask* FreesoundClient::downloadSound(FSSound sound, const File & location, URL::DownloadTask::Listener * listener)
+std::unique_ptr<URL::DownloadTask> FreesoundClient::downloadSound(FSSound sound, const File & location, URL::DownloadTask::Listener * listener)
 {
 	URL address = sound.getDownload();
 	return address.downloadToFile(location, "Authorization: " + header, listener);
 }
 
-URL::DownloadTask* FreesoundClient::downloadOGGSoundPreview(FSSound sound, const File & location, URL::DownloadTask::Listener * listener)
+std::unique_ptr<URL::DownloadTask> FreesoundClient::downloadOGGSoundPreview(FSSound sound, const File & location, URL::DownloadTask::Listener * listener)
 {
     URL address = sound.getOGGPreviewURL();
     return address.downloadToFile(location, "", listener);
@@ -681,7 +681,7 @@ SoundList FreesoundClient::getPackSounds(String id, String descriptorsFilter, in
 	return SoundList();
 }
 
-URL::DownloadTask* FreesoundClient::downloadPack(FSPack pack, const File & location, URL::DownloadTask::Listener * listener)
+std::unique_ptr<URL::DownloadTask> FreesoundClient::downloadPack(FSPack pack, const File & location, URL::DownloadTask::Listener * listener)
 {
 
 	URL address = URIS::uri(URIS::PACK_DOWNLOAD, StringArray(pack.getID()));

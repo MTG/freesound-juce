@@ -841,7 +841,7 @@ public:
 	SoundList getSimilarSounds(String id, String descriptorsFilter = String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
 
 	/**
-	 * \fn	URL::DownloadTask* FreesoundClient::downloadSound(FSSound sound, const File &location, URL::DownloadTask::Listener * listener = nullptr);
+	 * \fn	std::unique_ptr<URL::DownloadTask> FreesoundClient::downloadSound(FSSound sound, const File &location, URL::DownloadTask::Listener * listener = nullptr);
 	 *
 	 * \brief	This resource allows you to download a sound in its original format/quality
 	 *
@@ -855,10 +855,10 @@ public:
 	 * \returns	Null if it fails, else a pointer to an URL::DownloadTask.
 	 */
 
-	URL::DownloadTask* downloadSound(FSSound sound, const File &location, URL::DownloadTask::Listener * listener = nullptr);
+	std::unique_ptr<URL::DownloadTask> downloadSound(FSSound sound, const File &location, URL::DownloadTask::Listener * listener = nullptr);
     
     /**
-     * \fn    URL::DownloadTask* FreesoundClient::downloadOGGSoundPreview(FSSound sound, const File &location, URL::DownloadTask::Listener * listener = nullptr);
+     * \fn    std::unique_ptr<URL::DownloadTask> FreesoundClient::downloadOGGSoundPreview(FSSound sound, const File &location, URL::DownloadTask::Listener * listener = nullptr);
      *
      * \brief    This resource allows you to download the preview of a sound in OGG format. The advantage of downloading a preview instead of the original file is that the file size is lower and the format is unified.
      *
@@ -872,7 +872,7 @@ public:
      * \returns    Null if it fails, else a pointer to an URL::DownloadTask.
      */
     
-    URL::DownloadTask* downloadOGGSoundPreview(FSSound sound, const File &location, URL::DownloadTask::Listener * listener = nullptr);
+    std::unique_ptr<URL::DownloadTask> downloadOGGSoundPreview(FSSound sound, const File &location, URL::DownloadTask::Listener * listener = nullptr);
 
 	/**
 	 * \fn	int FreesoundClient::uploadSound(const File &fileToUpload, String tags, String description, String name = String(), String license = "Creative Commons 0", String pack = String(), String geotag = String(), Callback cb = [] {});
@@ -1115,7 +1115,7 @@ public:
 	SoundList getPackSounds(String id, String descriptorsFilter = String(), int page = -1, int pageSize = -1, String fields = String(), String descriptors = String(), int normalized = 0);
 
 	/**
-	 * \fn	URL::DownloadTask* FreesoundClient::downloadPack(FSPack pack, const File &location, URL::DownloadTask::Listener * listener = nullptr);
+	 * \fn	std::unique_ptr<URL::DownloadTask> FreesoundClient::downloadPack(FSPack pack, const File &location, URL::DownloadTask::Listener * listener = nullptr);
 	 *
 	 * \brief	This resource allows you to download all the sounds of a pack in a single zip file.
 	 *
@@ -1129,7 +1129,7 @@ public:
 	 * \returns	Null if it fails, else a pointer to the URL::DownloadTask.
 	 */
 
-	URL::DownloadTask* downloadPack(FSPack pack, const File &location, URL::DownloadTask::Listener * listener = nullptr);
+	std::unique_ptr<URL::DownloadTask> downloadPack(FSPack pack, const File &location, URL::DownloadTask::Listener * listener = nullptr);
 
 	/**
 	 * \fn	FSUser FreesoundClient::getMe();
